@@ -1,0 +1,412 @@
+import React, { useState, useEffect, Suspense } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+
+import {
+  ChevronDownIcon,
+  Bars3Icon,
+  XMarkIcon,
+  HomeIcon,
+  UserGroupIcon,
+  BanknotesIcon,
+  NewspaperIcon,
+  ChatBubbleBottomCenterTextIcon,
+  PhotoIcon,
+  PhoneIcon,
+  CreditCardIcon,
+  RocketLaunchIcon,
+} from "@heroicons/react/24/outline";
+
+const Navbar = () => {
+  const { t, i18n } = useTranslation();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navItems = [
+    {
+      name: t("navbar.home"),
+      path: "/",
+      icon: HomeIcon,
+    },
+    {
+      name: t("navbar.about_us"),
+      icon: UserGroupIcon,
+      dropdown: [
+        { name: t("navbar.about.team"), path: "/about/team" },
+        { name: t("navbar.about.mission_vision"), path: "/about/mission" },
+        { name: t("navbar.about.partners"), path: "/about/partners" },
+      ],
+    },
+    {
+      name: t("navbar.services"),
+      icon: BanknotesIcon,
+      dropdown: [
+        {
+          name: t("navbar.services_dropdown.savings"),
+          path: "/services/savings",
+        },
+        { name: t("navbar.services_dropdown.loans"), path: "/services/loans" },
+        {
+          name: t("navbar.services_dropdown.insurance"),
+          path: "/services/insurance",
+        },
+        {
+          name: t("navbar.services_dropdown.digital_banking"),
+          path: "/services/digital",
+        },
+      ],
+    },
+    {
+      name: t("navbar.news"),
+      icon: NewspaperIcon,
+      dropdown: [
+        {
+          name: t("navbar.news_dropdown.announcements"),
+          path: "/news/announcements",
+        },
+        { name: t("navbar.news_dropdown.events"), path: "/news/events" },
+        { name: t("navbar.news_dropdown.vacancies"), path: "/news/vacancies" },
+      ],
+    },
+    {
+      name: t("navbar.testimonials"),
+      icon: ChatBubbleBottomCenterTextIcon,
+      dropdown: [
+        {
+          name: t("navbar.testimonials_dropdown.documents"),
+          path: "/testimonials/documents",
+        },
+        {
+          name: t("navbar.testimonials_dropdown.success_stories"),
+          path: "/testimonials/success",
+        },
+      ],
+    },
+    {
+      name: t("navbar.multimedia"),
+      icon: PhotoIcon,
+      dropdown: [
+        {
+          name: t("navbar.multimedia_dropdown.gallery"),
+          path: "/media/gallery",
+        },
+        { name: t("navbar.multimedia_dropdown.videos"), path: "/media/videos" },
+      ],
+    },
+    {
+      name: t("navbar.contact"),
+      icon: PhoneIcon,
+      dropdown: [
+        { name: t("navbar.contact_dropdown.faq"), path: "/contact/faq" },
+        {
+          name: t("navbar.contact_dropdown.offices"),
+          path: "/contact/offices",
+        },
+      ],
+    },
+    {
+      name: t("navbar.payment"),
+      path: "/payment",
+      icon: CreditCardIcon,
+    },
+  ];
+
+  const handleDropdownToggle = (itemName) => {
+    setActiveDropdown(activeDropdown === itemName ? null : itemName);
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setIsMobileMenuOpen(false);
+  };
+
+  return (
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-md shadow-lg"
+          : "bg-white/90 backdrop-blur-sm"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 lg:h-20 ">
+          {/* Logo and Language Switcher */}
+          <div className="flex items-center space-x-4 mr-5">
+            <Link to="/" className="flex items-center space-x-2 mr-10">
+              <img
+                src="/favicon.ico"
+                alt="Logo"
+                className="w-10 h-10 lg:w-12 lg:h-12 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200 transform hover:scale-105"
+              />
+              <span className="text-xl lg:text-2xl font-bold text-gray-800">
+                {t("navbar.logo")}
+              </span>
+            </Link>
+            {/* Language Switcher (Desktop) */}
+            <div className="hidden lg:block relative ml-10">
+              <button
+                className="flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+                onClick={() =>
+                  setActiveDropdown(
+                    activeDropdown === "language" ? null : "language"
+                  )
+                }
+              >
+                <span className="font-medium">
+                  {i18n.language === "en" ? "EN" : "AM"}
+                </span>
+                <ChevronDownIcon
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    activeDropdown === "language" ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              <AnimatePresence>
+                {activeDropdown === "language" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 mt-1 w-32 bg-white rounded-lg shadow-xl border border-gray-100 py-2"
+                  >
+                    <button
+                      onClick={() => changeLanguage("en")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                    >
+                      English
+                    </button>
+                    <button
+                      onClick={() => changeLanguage("am")}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                    >
+                      አማርኛ
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-1 ">
+            {navItems.map((item) => (
+              <div key={item.name} className="relative ">
+                {item.dropdown ? (
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setActiveDropdown(item.name)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    <button className="flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200">
+                      <item.icon className="w-4 h-4" />
+                      <span className="font-medium">{item.name}</span>
+                      <ChevronDownIcon
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          activeDropdown === item.name ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <AnimatePresence>
+                      {activeDropdown === item.name && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-2"
+                        >
+                          {item.dropdown.map((subItem) => (
+                            <Link
+                              key={subItem.name}
+                              to={subItem.path}
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    to={item.path}
+                    className={`flex items-center space-x-1 px-3 py-2 transition-colors duration-200 ${
+                      location.pathname === item.path
+                        ? "text-blue-600 bg-blue-50 rounded-lg"
+                        : "text-gray-700 hover:text-blue-600"
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span className="font-medium">{item.name}</span>
+                  </Link>
+                )}
+              </div>
+            ))}
+
+            {/* Get Started Button */}
+            <Link
+              to="/get-started"
+              className="ml-4 bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-full hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <RocketLaunchIcon className="w-4 h-4" />
+              <span className="font-medium">{t("navbar.get_started")}</span>
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          >
+            {isMobileMenuOpen ? (
+              <XMarkIcon className="w-6 h-6" />
+            ) : (
+              <Bars3Icon className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden bg-white border-t border-gray-100"
+            >
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                {navItems.map((item) => (
+                  <div key={item.name}>
+                    {item.dropdown ? (
+                      <div>
+                        <button
+                          onClick={() => handleDropdownToggle(item.name)}
+                          className="w-full flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <item.icon className="w-5 h-5" />
+                            <span>{item.name}</span>
+                          </div>
+                          <ChevronDownIcon
+                            className={`w-4 h-4 transition-transform ${
+                              activeDropdown === item.name ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                        <AnimatePresence>
+                          {activeDropdown === item.name && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="ml-4 mt-1 space-y-1"
+                            >
+                              {item.dropdown.map((subItem) => (
+                                <Link
+                                  key={subItem.name}
+                                  to={subItem.path}
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                  className="block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <Link
+                        to={item.path}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
+                      >
+                        <item.icon className="w-5 h-5" />
+                        <span>{item.name}</span>
+                      </Link>
+                    )}
+                  </div>
+                ))}
+
+                {/* Language Switcher (Mobile) */}
+                <div className="px-3 py-2">
+                  <button
+                    onClick={() => handleDropdownToggle("language")}
+                    className="w-full flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>{i18n.language === "en" ? "English" : "አማርኛ"}</span>
+                    </div>
+                    <ChevronDownIcon
+                      className={`w-4 h-4 transition-transform ${
+                        activeDropdown === "language" ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  <AnimatePresence>
+                    {activeDropdown === "language" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="ml-4 mt-1 space-y-1"
+                      >
+                        <button
+                          onClick={() => changeLanguage("en")}
+                          className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                        >
+                          English
+                        </button>
+                        <button
+                          onClick={() => changeLanguage("am")}
+                          className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                        >
+                          አማርኛ
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <Link
+                  to="/get-started"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-md mx-3 mt-4"
+                >
+                  <RocketLaunchIcon className="w-5 h-5" />
+                  <span>{t("navbar.get_started")}</span>
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.nav>
+  );
+};
+
+export default function WrappedNavbar() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Navbar />
+    </Suspense>
+  );
+}
