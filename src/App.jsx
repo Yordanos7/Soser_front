@@ -148,6 +148,14 @@ function App() {
                   }
                 />
                 <Route
+                  path="/admin/manage-videos"
+                  element={
+                    //   <ProtectedRoute role="admin">
+                    <ManageVideos />
+                    //  </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/users"
                   element={
                     //  <ProtectedRoute role="admin">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   PlayIcon,
@@ -9,152 +9,40 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { getVideos } from "../../api/video";
+import getYouTubeId from "get-youtube-id";
 
 const Videos = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const videos = [
-    {
-      id: 1,
-      title: "Sosser Impact Documentary 2023",
-      category: "Documentary",
-      duration: "12:45",
-      views: "15.2K",
-      uploadDate: "2024-01-15",
-      description:
-        "A comprehensive documentary showcasing Sosser's impact on Ethiopian communities, featuring real stories from members who have transformed their lives through our services.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: true,
-      author: "Sosser Media Team",
-    },
-    {
-      id: 2,
-      title: "How to Use Mobile Banking App",
-      category: "Tutorial",
-      duration: "8:30",
-      views: "23.7K",
-      uploadDate: "2023-12-20",
-      description:
-        "Step-by-step guide on using Sosser's mobile banking application. Learn how to transfer money, pay bills, and manage your account from your smartphone.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: true,
-      author: "Digital Banking Team",
-    },
-    {
-      id: 3,
-      title: "Success Story: Almaz's Textile Business",
-      category: "Success Story",
-      duration: "6:15",
-      views: "8.9K",
-      uploadDate: "2023-11-30",
-      description:
-        "Meet Almaz Tadesse from Bahir Dar, who transformed her small textile shop into a thriving business with Sosser's business loan support.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: true,
-      author: "Success Stories Team",
-    },
-    {
-      id: 4,
-      title: "Financial Literacy Workshop Highlights",
-      category: "Education",
-      duration: "10:22",
-      views: "12.1K",
-      uploadDate: "2023-11-15",
-      description:
-        "Highlights from our recent financial literacy workshop in Addis Ababa, where community members learned essential money management skills.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: false,
-      author: "Education Team",
-    },
-    {
-      id: 5,
-      title: "Digital Payment Systems Explained",
-      category: "Tutorial",
-      duration: "7:45",
-      views: "18.3K",
-      uploadDate: "2023-10-25",
-      description:
-        "Understanding digital payment systems in Ethiopia: TeleBirr integration, QR codes, and contactless payments made simple.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: false,
-      author: "Digital Banking Team",
-    },
-    {
-      id: 6,
-      title: "Agricultural Loan Program Overview",
-      category: "Program",
-      duration: "9:12",
-      views: "14.6K",
-      uploadDate: "2023-10-10",
-      description:
-        "Comprehensive overview of Sosser's agricultural loan program, featuring testimonials from farmers and loan officers.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: true,
-      author: "Agricultural Team",
-    },
-    {
-      id: 7,
-      title: "Women in Finance Panel Discussion",
-      category: "Event",
-      duration: "45:30",
-      views: "7.2K",
-      uploadDate: "2023-09-20",
-      description:
-        "Full recording of our Women in Finance panel discussion featuring successful female entrepreneurs and financial experts.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: false,
-      author: "Events Team",
-    },
-    {
-      id: 8,
-      title: "Youth Entrepreneurship Success",
-      category: "Success Story",
-      duration: "5:48",
-      views: "11.4K",
-      uploadDate: "2023-09-05",
-      description:
-        "Young entrepreneur Dawit shares how Sosser's youth loan program helped him start his digital marketing agency.",
-      thumbnail: "/film.png",
-      videoUrl: "https://www.youtube.com/embed/dE-6ScPU1mI",
-      featured: false,
-      author: "Youth Programs Team",
-    },
-  ];
+  useEffect(() => {
+    const fetchVideos = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const data = await getVideos();
+        setVideos(data.videos);
+      } catch (err) {
+        setError(err.message || "Error fetching videos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, []);
 
   const categories = [
     { name: "All Videos", count: videos.length, active: true },
-    {
-      name: "Documentary",
-      count: videos.filter((v) => v.category === "Documentary").length,
-      active: false,
-    },
-    {
-      name: "Tutorial",
-      count: videos.filter((v) => v.category === "Tutorial").length,
-      active: false,
-    },
-    {
-      name: "Success Story",
-      count: videos.filter((v) => v.category === "Success Story").length,
-      active: false,
-    },
-    {
-      name: "Education",
-      count: videos.filter((v) => v.category === "Education").length,
-      active: false,
-    },
-    {
-      name: "Event",
-      count: videos.filter((v) => v.category === "Event").length,
-      active: false,
-    },
+    ...Object.entries(
+      videos.reduce((acc, video) => {
+        acc[video.category] = (acc[video.category] || 0) + 1;
+        return acc;
+      }, {})
+    ).map(([name, count]) => ({ name, count, active: false })),
   ];
 
   const featuredVideos = videos.filter((video) => video.featured);
@@ -214,7 +102,10 @@ const Videos = () => {
               {Math.round(
                 videos.reduce(
                   (total, video) =>
-                    total + parseFloat(video.views.replace("K", "")) * 1000,
+                    total +
+                    (video.views
+                      ? parseFloat(video.views.replace("K", "")) * 1000
+                      : 0),
                   0
                 ) / 1000
               )}
@@ -281,15 +172,27 @@ const Videos = () => {
               >
                 <XMarkIcon className="w-6 h-6" />
               </button>
-              <div className="aspect-w-16  w-full h-96 ">
-                <iframe
-                  src={`${selectedVideo.videoUrl}?autoplay=1`}
-                  title={selectedVideo.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                ></iframe>
+              <div className="aspect-w-16 w-full h-96">
+                {selectedVideo.url.startsWith("http") ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${getYouTubeId(
+                      selectedVideo.url
+                    )}`}
+                    title={selectedVideo.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  ></iframe>
+                ) : (
+                  <video
+                    src={`http://localhost:5000/${selectedVideo.url}`}
+                    title={selectedVideo.title}
+                    controls
+                    autoPlay
+                    className="w-full h-full"
+                  ></video>
+                )}
               </div>
               <div className="p-6 bg-white text-gray-800">
                 <div className="flex items-start justify-between mb-4">
@@ -341,12 +244,20 @@ const Videos = () => {
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
                 onClick={() => setSelectedVideo(video)}
               >
-                <div className="relative">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="w-full h-full object-cover aspect-w-16 aspect-h-9"
-                  />
+                <div className="relative h-48">
+                  {video.url.startsWith("http") ? (
+                    <img
+                      src={`http://localhost:5000/${video.thumbnail}`}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <video
+                      src={`http://localhost:5000/${video.url}`}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300 hover:bg-opacity-20">
                     <PlayIcon className="w-16 h-16 text-white opacity-80 hover:opacity-100 transition-opacity" />
                   </div>
@@ -398,12 +309,20 @@ const Videos = () => {
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
                 onClick={() => setSelectedVideo(video)}
               >
-                <div className="relative">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="w-full h-full object-cover aspect-w-16 aspect-h-9"
-                  />
+                <div className="relative h-48">
+                  {video.url.startsWith("http") ? (
+                    <img
+                      src={`http://localhost:5000/${video.thumbnail}`}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <video
+                      src={`http://localhost:5000/${video.url}`}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-opacity duration-300 hover:bg-opacity-20">
                     <PlayIcon className="w-12 h-12 text-white opacity-80 hover:opacity-100 transition-opacity" />
                   </div>

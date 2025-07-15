@@ -1,584 +1,379 @@
-
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  FilmIcon,
-  PlusIcon,
-  TrashIcon,
-  PencilIcon,
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import {
   EyeIcon,
-  PlayIcon,
-  TagIcon,
-  CalendarDaysIcon,
-  ClockIcon
-} from '@heroicons/react/24/outline';
+  TrashIcon,
+  ArrowUpTrayIcon,
+} from "@heroicons/react/24/outline";
+import { getVideos, createVideo, deleteVideo } from "../../api/video";
 
 const ManageVideos = () => {
-  const [videos, setVideos] = useState([
-    {
-      id: 1,
-      title: 'Sosser Impact Documentary 2023',
-      category: 'Documentary',
-      duration: '12:45',
-      views: '15.2K',
-      uploadDate: '2024-01-15',
-      description: 'Comprehensive documentary showcasing Sosser\'s impact on Ethiopian communities',
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      thumbnail: '/images/videos/documentary-thumb.jpg',
-      featured: true,
-      status: 'published',
-      author: 'Sosser Media Team'
-    },
-    {
-      id: 2,
-      title: 'How to Use Mobile Banking App',
-      category: 'Tutorial',
-      duration: '8:30',
-      views: '23.7K',
-      uploadDate: '2023-12-20',
-      description: 'Step-by-step guide on using Sosser\'s mobile banking application',
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      thumbnail: '/images/videos/mobile-banking-thumb.jpg',
-      featured: true,
-      status: 'published',
-      author: 'Digital Banking Team'
-    },
-    {
-      id: 3,
-      title: 'Success Story: Almaz\'s Textile Business',
-      category: 'Success Story',
-      duration: '6:15',
-      views: '8.9K',
-      uploadDate: '2023-11-30',
-      description: 'Meet Almaz Tadesse who transformed her textile shop into a thriving business',
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      thumbnail: '/images/videos/almaz-story-thumb.jpg',
-      featured: false,
-      status: 'published',
-      author: 'Success Stories Team'
-    },
-    {
-      id: 4,
-      title: 'Financial Literacy Workshop Highlights',
-      category: 'Education',
-      duration: '10:22',
-      views: '12.1K',
-      uploadDate: '2023-11-15',
-      description: 'Highlights from recent financial literacy workshop in Addis Ababa',
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      thumbnail: '/images/videos/workshop-thumb.jpg',
-      featured: false,
-      status: 'draft',
-      author: 'Education Team'
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [file, setFile] = useState(null);
+  const [uploadMethod, setUploadMethod] = useState("file");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
+  const [category, setCategory] = useState("");
+  const [date, setDate] = useState("");
+  const [duration, setDuration] = useState("");
+  const [views, setViews] = useState("");
+  const [author, setAuthor] = useState("");
+  const [featured, setFeatured] = useState(false);
+
+  const fetchVideos = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const data = await getVideos();
+      setVideos(data.videos);
+    } catch (err) {
+      setError(err.message || "Error fetching videos");
+    } finally {
+      setLoading(false);
     }
-  ]);
-
-  const [selectedVideos, setSelectedVideos] = useState([]);
-  const [showVideoModal, setShowVideoModal] = useState(false);
-  const [editingVideo, setEditingVideo] = useState(null);
-  const [activeCategory, setActiveCategory] = useState('All');
-  
-  const [newVideo, setNewVideo] = useState({
-    title: '',
-    category: 'Tutorial',
-    duration: '',
-    description: '',
-    videoUrl: '',
-    author: '',
-    featured: false
-  });
-
-  const categories = [
-    'All', 'Documentary', 'Tutorial', 'Success Story', 'Education', 'Event', 'Program'
-  ];
-
-  const filteredVideos = activeCategory === 'All' 
-    ? videos 
-    : videos.filter(video => video.category === activeCategory);
-
-  const handleSelectVideo = (videoId) => {
-    setSelectedVideos(prev => 
-      prev.includes(videoId) 
-        ? prev.filter(id => id !== videoId)
-        : [...prev, videoId]
-    );
   };
 
-  const handleSelectAll = () => {
-    if (selectedVideos.length === filteredVideos.length) {
-      setSelectedVideos([]);
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleThumbnailChange = (e) => {
+    setThumbnail(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (uploadMethod === "file" && !file) {
+      setError("File is required for file upload method.");
+      return;
+    }
+    if (uploadMethod === "url" && !youtubeUrl) {
+      setError("YouTube URL is required for URL upload method.");
+      return;
+    }
+    if (!title) {
+      setError("Title is required.");
+      return;
+    }
+
+    const formData = new FormData();
+    if (uploadMethod === "file") {
+      formData.append("file", file);
     } else {
-      setSelectedVideos(filteredVideos.map(video => video.id));
+      formData.append("url", youtubeUrl);
+      if (thumbnail) {
+        formData.append("thumbnail", thumbnail);
+      }
+    }
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("date", date);
+    formData.append("duration", duration);
+    formData.append("views", views);
+    formData.append("author", author);
+    formData.append("featured", featured);
+    try {
+      await createVideo(formData);
+      setTitle("");
+      setDescription("");
+      setFile(null);
+      setYoutubeUrl("");
+      setThumbnail(null);
+      setCategory("");
+      setDate("");
+      setDuration("");
+      setViews("");
+      setAuthor("");
+      setFeatured(false);
+      fetchVideos(); // Refresh the list
+    } catch (err) {
+      setError(err.message || "Error uploading video.");
     }
   };
 
-  const handleDeleteSelected = () => {
-    if (selectedVideos.length === 0) return;
-    
-    if (confirm(`Delete ${selectedVideos.length} selected video(s)?`)) {
-      setVideos(prev => prev.filter(video => !selectedVideos.includes(video.id)));
-      setSelectedVideos([]);
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this video?")) {
+      try {
+        await deleteVideo(id);
+        fetchVideos(); // Refresh the list
+      } catch (err) {
+        setError(err.message || "Error deleting video.");
+      }
     }
-  };
-
-  const handleDeleteVideo = (videoId) => {
-    if (confirm('Delete this video?')) {
-      setVideos(prev => prev.filter(video => video.id !== videoId));
-      setSelectedVideos(prev => prev.filter(id => id !== videoId));
-    }
-  };
-
-  const handleEditVideo = (video) => {
-    setEditingVideo(video);
-    setNewVideo({
-      title: video.title,
-      category: video.category,
-      duration: video.duration,
-      description: video.description,
-      videoUrl: video.videoUrl,
-      author: video.author,
-      featured: video.featured
-    });
-    setShowVideoModal(true);
-  };
-
-  const handleSaveVideo = () => {
-    if (editingVideo) {
-      // Update existing video
-      setVideos(prev => prev.map(video => 
-        video.id === editingVideo.id 
-          ? { 
-              ...video, 
-              ...newVideo, 
-              thumbnail: '/images/videos/placeholder-thumb.jpg'
-            }
-          : video
-      ));
-    } else {
-      // Add new video
-      const newId = Math.max(...videos.map(video => video.id)) + 1;
-      setVideos(prev => [...prev, {
-        id: newId,
-        ...newVideo,
-        views: '0',
-        uploadDate: new Date().toISOString().split('T')[0],
-        thumbnail: '/images/videos/placeholder-thumb.jpg',
-        status: 'draft'
-      }]);
-    }
-    
-    // Reset form
-    setNewVideo({
-      title: '',
-      category: 'Tutorial',
-      duration: '',
-      description: '',
-      videoUrl: '',
-      author: '',
-      featured: false
-    });
-    setEditingVideo(null);
-    setShowVideoModal(false);
-  };
-
-  const handleToggleFeatured = (videoId) => {
-    setVideos(prev => prev.map(video => 
-      video.id === videoId 
-        ? { ...video, featured: !video.featured }
-        : video
-    ));
-  };
-
-  const handleToggleStatus = (videoId) => {
-    setVideos(prev => prev.map(video => 
-      video.id === videoId 
-        ? { ...video, status: video.status === 'published' ? 'draft' : 'published' }
-        : video
-    ));
-  };
-
-  const formatViews = (views) => {
-    return views.replace('K', ',000').replace('M', ',000,000');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8"
-        >
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Manage Videos</h1>
-            <p className="text-gray-600">Upload, organize, and manage video content</p>
-          </div>
-          <button
-            onClick={() => setShowVideoModal(true)}
-            className="mt-4 sm:mt-0 bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center"
-          >
-            <PlusIcon className="w-5 h-5 mr-2" />
-            Add New Video
-          </button>
-        </motion.div>
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-6">Manage Videos</h1>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
-        >
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <FilmIcon className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-            <h3 className="text-2xl font-bold text-gray-900">{videos.length}</h3>
-            <p className="text-gray-600">Total Videos</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <EyeIcon className="w-8 h-8 text-green-600 mx-auto mb-2" />
-            <h3 className="text-2xl font-bold text-gray-900">
-              {Math.round(videos.reduce((total, video) => {
-                const views = parseFloat(video.views.replace('K', '')) * (video.views.includes('K') ? 1000 : 1);
-                return total + views;
-              }, 0) / 1000)}K
-            </h3>
-            <p className="text-gray-600">Total Views</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <PlayIcon className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-            <h3 className="text-2xl font-bold text-gray-900">
-              {videos.filter(video => video.featured).length}
-            </h3>
-            <p className="text-gray-600">Featured</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <CalendarDaysIcon className="w-8 h-8 text-red-600 mx-auto mb-2" />
-            <h3 className="text-2xl font-bold text-gray-900">
-              {videos.filter(video => video.status === 'published').length}
-            </h3>
-            <p className="text-gray-600">Published</p>
-          </div>
-        </motion.div>
-
-        {/* Filters and Actions */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white rounded-xl shadow-lg p-6 mb-8"
-        >
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
-            {/* Category Filters */}
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`px-4 py-2 rounded-full font-medium transition-all duration-200 ${
-                    activeCategory === category
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-
-            {/* Bulk Actions */}
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleSelectAll}
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                {selectedVideos.length === filteredVideos.length ? 'Deselect All' : 'Select All'}
-              </button>
-              {selectedVideos.length > 0 && (
-                <button
-                  onClick={handleDeleteSelected}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200 flex items-center"
-                >
-                  <TrashIcon className="w-4 h-4 mr-2" />
-                  Delete ({selectedVideos.length})
-                </button>
-              )}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Videos Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {filteredVideos.map((video, index) => (
-            <motion.div
-              key={video.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + index * 0.05 }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+      <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4">Upload New Video</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700"
             >
-              {/* Video Thumbnail */}
-              <div className="relative">
-                <div className="h-48 bg-gradient-to-br from-blue-400 to-green-500 flex items-center justify-center">
-                  <PlayIcon className="w-16 h-16 text-white" />
-                </div>
-                
-                {/* Duration */}
-                <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-sm">
-                  {video.duration}
-                </div>
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows="3"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            ></textarea>
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Category
+            </label>
+            <input
+              type="text"
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="date"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Date
+            </label>
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="duration"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Duration
+            </label>
+            <input
+              type="text"
+              id="duration"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="views"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Views
+            </label>
+            <input
+              type="text"
+              id="views"
+              value={views}
+              onChange={(e) => setViews(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="author"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Author
+            </label>
+            <input
+              type="text"
+              id="author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="featured"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Featured
+            </label>
+            <input
+              type="checkbox"
+              id="featured"
+              checked={featured}
+              onChange={(e) => setFeatured(e.target.checked)}
+              className="mt-1 block"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Upload Method
+            </label>
+            <div className="mt-2 flex gap-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  value="file"
+                  checked={uploadMethod === "file"}
+                  onChange={() => setUploadMethod("file")}
+                  className="form-radio"
+                />
+                <span className="ml-2">Upload File</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  value="url"
+                  checked={uploadMethod === "url"}
+                  onChange={() => setUploadMethod("url")}
+                  className="form-radio"
+                />
+                <span className="ml-2">YouTube URL</span>
+              </label>
+            </div>
+          </div>
 
-                {/* Status Badge */}
-                <div className="absolute top-2 left-2">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    video.status === 'published' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {video.status}
-                  </span>
-                </div>
-
-                {/* Featured Badge */}
-                {video.featured && (
-                  <div className="absolute top-2 right-2">
-                    <span className="text-yellow-500 text-lg">⭐</span>
-                  </div>
-                )}
-
-                {/* Selection Checkbox */}
-                <div className="absolute bottom-2 left-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedVideos.includes(video.id)}
-                    onChange={() => handleSelectVideo(video.id)}
-                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                </div>
+          {uploadMethod === "file" ? (
+            <div className="mb-4">
+              <label
+                htmlFor="file"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Video File
+              </label>
+              <input
+                type="file"
+                id="file"
+                onChange={handleFileChange}
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                accept="video/*"
+              />
+            </div>
+          ) : (
+            <>
+              <div className="mb-4">
+                <label
+                  htmlFor="youtubeUrl"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  YouTube URL
+                </label>
+                <input
+                  type="text"
+                  id="youtubeUrl"
+                  value={youtubeUrl}
+                  onChange={(e) => setYoutubeUrl(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
               </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="thumbnail"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Thumbnail Image (Optional)
+                </label>
+                <input
+                  type="file"
+                  id="thumbnail"
+                  onChange={handleThumbnailChange}
+                  className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  accept="image/*"
+                />
+              </div>
+            </>
+          )}
+          <button
+            type="submit"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <ArrowUpTrayIcon className="w-5 h-5 mr-2" />
+            Upload Video
+          </button>
+        </form>
+      </div>
 
-              {/* Content */}
+      {loading && <div>Loading videos...</div>}
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {!loading && !error && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {videos.length === 0 && (
+            <div className="col-span-full text-gray-500">No videos found.</div>
+          )}
+          {videos.map((item) => (
+            <motion.div
+              key={item.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+              whileHover={{ scale: 1.03 }}
+            >
+              <video
+                src={`http://localhost:5000/${item.url}`}
+                alt={item.title}
+                className="w-full h-48 object-cover"
+                controls
+              />
               <div className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-bold text-gray-900 text-sm truncate">{video.title}</h3>
-                </div>
-                
-                <div className="flex items-center justify-between mb-2">
-                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
-                    {video.category}
-                  </span>
-                  <div className="flex items-center text-gray-500 text-xs">
-                    <EyeIcon className="w-3 h-3 mr-1" />
-                    {video.views}
-                  </div>
-                </div>
-
-                <p className="text-gray-600 text-xs mb-3 line-clamp-2">
-                  {video.description}
+                <h2 className="font-semibold text-lg truncate">{item.title}</h2>
+                <p className="text-gray-700 text-sm mb-2 truncate">
+                  {item.description}
                 </p>
-
-                <div className="text-xs text-gray-500 mb-4">
-                  <p>By: {video.author}</p>
-                  <p>Uploaded: {new Date(video.uploadDate).toLocaleDateString()}</p>
-                </div>
-
-                {/* Actions */}
-                <div className="flex items-center justify-between">
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleEditVideo(video)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
-                      title="Edit"
-                    >
-                      <PencilIcon className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteVideo(video.id)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
-                      title="Delete"
-                    >
-                      <TrashIcon className="w-4 h-4" />
-                    </button>
-                  </div>
-                  
-                  <div className="flex space-x-1">
-                    <button
-                      onClick={() => handleToggleFeatured(video.id)}
-                      className={`px-2 py-1 rounded text-xs font-medium transition-colors duration-200 ${
-                        video.featured
-                          ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                          : 'bg-gray-100 text-gray-600 hover:bg-yellow-50'
-                      }`}
-                    >
-                      {video.featured ? 'Featured' : 'Feature'}
-                    </button>
-                    <button
-                      onClick={() => handleToggleStatus(video.id)}
-                      className={`px-2 py-1 rounded text-xs font-medium transition-colors duration-200 ${
-                        video.status === 'published'
-                          ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                          : 'bg-gray-100 text-gray-600 hover:bg-green-50'
-                      }`}
-                    >
-                      {video.status === 'published' ? 'Published' : 'Publish'}
-                    </button>
-                  </div>
+                <div className="mt-4 flex gap-2">
+                  <a
+                    href={`http://localhost:5000/${item.url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                  >
+                    <EyeIcon className="w-4 h-4 mr-1" />
+                    View
+                  </a>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="inline-flex items-center px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                  >
+                    <TrashIcon className="w-4 h-4 mr-1" />
+                    Delete
+                  </button>
                 </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Add/Edit Video Modal */}
-        {showVideoModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-xl shadow-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-            >
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                {editingVideo ? 'Edit Video' : 'Add New Video'}
-              </h3>
-
-              <div className="space-y-4">
-                {/* Title */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Video Title *
-                  </label>
-                  <input
-                    type="text"
-                    value={newVideo.title}
-                    onChange={(e) => setNewVideo(prev => ({ ...prev, title: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter video title..."
-                  />
-                </div>
-
-                {/* Category and Duration */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
-                      Category
-                    </label>
-                    <select
-                      value={newVideo.category}
-                      onChange={(e) => setNewVideo(prev => ({ ...prev, category: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      {categories.filter(cat => cat !== 'All').map(category => (
-                        <option key={category} value={category}>{category}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
-                      Duration
-                    </label>
-                    <input
-                      type="text"
-                      value={newVideo.duration}
-                      onChange={(e) => setNewVideo(prev => ({ ...prev, duration: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="e.g., 10:30"
-                    />
-                  </div>
-                </div>
-
-                {/* Video URL */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Video URL *
-                  </label>
-                  <input
-                    type="url"
-                    value={newVideo.videoUrl}
-                    onChange={(e) => setNewVideo(prev => ({ ...prev, videoUrl: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="https://www.youtube.com/watch?v=..."
-                  />
-                </div>
-
-                {/* Description */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Description
-                  </label>
-                  <textarea
-                    value={newVideo.description}
-                    onChange={(e) => setNewVideo(prev => ({ ...prev, description: e.target.value }))}
-                    rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Video description..."
-                  />
-                </div>
-
-                {/* Author */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Author/Creator
-                  </label>
-                  <input
-                    type="text"
-                    value={newVideo.author}
-                    onChange={(e) => setNewVideo(prev => ({ ...prev, author: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Content creator name..."
-                  />
-                </div>
-
-                {/* Featured */}
-                <div>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={newVideo.featured}
-                      onChange={(e) => setNewVideo(prev => ({ ...prev, featured: e.target.checked }))}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-900">Feature this video</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex justify-end space-x-4 mt-8">
-                <button
-                  onClick={() => {
-                    setShowVideoModal(false);
-                    setEditingVideo(null);
-                    setNewVideo({
-                      title: '',
-                      category: 'Tutorial',
-                      duration: '',
-                      description: '',
-                      videoUrl: '',
-                      author: '',
-                      featured: false
-                    });
-                  }}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSaveVideo}
-                  disabled={!newVideo.title || !newVideo.videoUrl}
-                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg hover:from-blue-700 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                >
-                  {editingVideo ? 'Update Video' : 'Add Video'}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

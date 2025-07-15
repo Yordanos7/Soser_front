@@ -84,6 +84,13 @@ const QuickActions = () => {
       link: "/admin/manage-documents",
       color: "from-gray-500 to-gray-600",
     },
+    {
+      title: "Manage Videos",
+      description: "Upload and organize videos",
+      icon: PhotoIcon,
+      link: "/admin/manage-videos",
+      color: "from-red-500 to-red-600",
+    },
   ];
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PhotoIcon,
@@ -8,158 +8,40 @@ import {
   EyeIcon,
   CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
+import { getGalleryItems } from "../../api/gallery";
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const galleryImages = [
-    {
-      id: 1,
-      title: "Grand Opening Ceremony",
-      category: "Events",
-      date: "2023-12-15",
-      description:
-        "Official opening of our new Bahir Dar branch with community leaders and members.",
-      image: "/1.png",
-      featured: true,
-    },
-    {
-      id: 2,
-      title: "Financial Literacy Workshop",
-      category: "Training",
-      date: "2023-11-20",
-      description:
-        "Community members participating in financial literacy training session.",
-      image: "/2.png",
-      featured: true,
-    },
-    {
-      id: 3,
-      title: "Agricultural Loan Beneficiaries",
-      category: "Success Stories",
-      date: "2023-10-30",
-      description:
-        "Farmers showcasing improved crops after receiving agricultural loans.",
-      image: "/3.png",
-      featured: true,
-    },
-    {
-      id: 4,
-      title: "Digital Banking Training",
-      category: "Training",
-      date: "2023-12-05",
-      description:
-        "Members learning to use mobile banking services and digital payment systems.",
-      image: "/2.png",
-      featured: false,
-    },
-    {
-      id: 5,
-      title: "Head Office Building",
-      category: "Infrastructure",
-      date: "2023-09-15",
-      description:
-        "Modern headquarters building in Addis Ababa with state-of-the-art facilities.",
-      image: "/1.png",
-      featured: false,
-    },
-    {
-      id: 6,
-      title: "Women Entrepreneurs Meeting",
-      category: "Events",
-      date: "2023-11-08",
-      description:
-        "Monthly meeting of women entrepreneurs supported by Sosser microfinance.",
-      image: "/3.png",
-      featured: true,
-    },
-    {
-      id: 7,
-      title: "Youth Entrepreneurship Seminar",
-      category: "Events",
-      date: "2023-10-12",
-      description:
-        "Young entrepreneurs presenting their business ideas at university seminar.",
-      image: "/2.png",
-      featured: false,
-    },
-    {
-      id: 8,
-      title: "Customer Service Center",
-      category: "Infrastructure",
-      date: "2023-08-25",
-      description:
-        "Modern customer service center providing efficient banking services.",
-      image: "/1.png",
-      featured: false,
-    },
-    {
-      id: 9,
-      title: "Community Outreach Program",
-      category: "Community",
-      date: "2023-12-20",
-      description:
-        "Sosser team visiting rural communities to promote financial inclusion.",
-      image: "/4.png",
-      featured: true,
-    },
-    {
-      id: 10,
-      title: "Technology Infrastructure",
-      category: "Infrastructure",
-      date: "2023-09-30",
-      description:
-        "Modern IT infrastructure supporting digital banking operations.",
-      image: "/5.png",
-      featured: false,
-    },
-    {
-      id: 11,
-      title: "Small Business Success",
-      category: "Success Stories",
-      date: "2023-11-15",
-      description:
-        "Local business owner expanding operations with Sosser business loan.",
-      image: "/3.png",
-      featured: true,
-    },
-    {
-      id: 12,
-      title: "Staff Training Session",
-      category: "Training",
-      date: "2023-10-05",
-      description:
-        "Sosser staff participating in professional development training.",
-      image: "/1.png",
-      featured: false,
-    },
-  ];
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const data = await getGalleryItems();
+        setGalleryImages(data.galleryItems);
+      } catch (err) {
+        setError(err.message || "Error fetching gallery data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGalleryImages();
+  }, []);
 
   const categories = [
     { name: "All", count: galleryImages.length },
-    {
-      name: "Events",
-      count: galleryImages.filter((img) => img.category === "Events").length,
-    },
-    {
-      name: "Training",
-      count: galleryImages.filter((img) => img.category === "Training").length,
-    },
-    {
-      name: "Success Stories",
-      count: galleryImages.filter((img) => img.category === "Success Stories")
-        .length,
-    },
-    {
-      name: "Infrastructure",
-      count: galleryImages.filter((img) => img.category === "Infrastructure")
-        .length,
-    },
-    {
-      name: "Community",
-      count: galleryImages.filter((img) => img.category === "Community").length,
-    },
+    ...Object.entries(
+      galleryImages.reduce((acc, img) => {
+        acc[img.category] = (acc[img.category] || 0) + 1;
+        return acc;
+      }, {})
+    ).map(([name, count]) => ({ name, count })),
   ];
 
   const filteredImages =
@@ -296,7 +178,7 @@ const Gallery = () => {
                 >
                   <div className="aspect-w-16 aspect-h-12 bg-gray-300 rounded-xl overflow-hidden">
                     <img
-                      src={image.image}
+                      src={`http://localhost:5000/${image.url}`}
                       alt={image.title}
                       className="w-full h-full object-cover"
                     />
@@ -342,7 +224,7 @@ const Gallery = () => {
               >
                 <div className="aspect-w-16 aspect-h-12">
                   <img
-                    src={image.image}
+                    src={`http://localhost:5000/${image.url}`}
                     alt={image.title}
                     className="w-full h-full object-cover"
                   />
@@ -367,6 +249,9 @@ const Gallery = () => {
                       {new Date(image.date).toLocaleDateString()}
                     </span>
                   </div>
+                  <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                    {image.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -415,7 +300,7 @@ const Gallery = () => {
                 {/* Image */}
                 <div className="w-full h-96">
                   <img
-                    src={selectedImage.image}
+                    src={`http://localhost:5000/${selectedImage.url}`}
                     alt={selectedImage.title}
                     className="w-full h-full object-cover"
                   />
