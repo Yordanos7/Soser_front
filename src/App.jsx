@@ -51,7 +51,6 @@ import ManageVideos from "./pages/Admin/ManageVideos";
 import AddNews from "./pages/Admin/AddNews";
 import Users from "./pages/Admin/Users";
 import ManagePayments from "./pages/Admin/ManagePayments";
-import ManageEvents from "./pages/Admin/ManageEvents";
 import ManageTestimonials from "./pages/Admin/ManageTestimonials";
 import ManageDocuments from "./pages/Admin/ManageDocuments";
 
@@ -131,14 +130,7 @@ function App() {
                     //  </ProtectedRoute>
                   }
                 />
-                <Route
-                  path="/admin/manage-events"
-                  element={
-                    //   <ProtectedRoute role="admin">
-                    <ManageEvents />
-                    //   </ProtectedRoute>
-                  }
-                />
+
                 <Route
                   path="/admin/manage-gallery"
                   element={

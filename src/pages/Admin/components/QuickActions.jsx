@@ -28,13 +28,7 @@ const QuickActions = () => {
       link: "/admin/add-event",
       color: "from-green-500 to-green-600",
     },
-    {
-      title: "Manage Events",
-      description: "Review and manage existing events",
-      icon: CalendarDaysIcon,
-      link: "/admin/manage-events",
-      color: "from-pink-500 to-pink-600",
-    },
+
     {
       title: "Post Vacancy",
       description: "Add a new job vacancy posting",

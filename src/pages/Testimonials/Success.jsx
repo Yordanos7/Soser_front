@@ -27,6 +27,8 @@ const Success = () => {
     fetchTestimonials();
   }, []);
 
+  console.log(successStories);
+
   const categories = [
     {
       name: "All Stories",
@@ -145,9 +147,13 @@ const Success = () => {
                       backgroundRepeat: "no-repeat",
                     }}
                   >
+                    <img
+                      src={`http://localhost:5000/${story.image}`}
+                      alt={story.title}
+                      className="h-48 w-full object-cover"
+                    />
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                       <div className="text-white text-center">
-                        <UserIcon className="w-20 h-20 mx-auto mb-4" />
                         <p className="text-lg font-semibold">
                           {story.category}
                         </p>

@@ -9,6 +9,8 @@ import {
   UserGroupIcon,
   EyeIcon,
   EyeSlashIcon,
+  PhoneIcon,
+  MapPinIcon,
 } from "@heroicons/react/24/outline";
 
 const GetStarted = () => {
@@ -18,6 +20,8 @@ const GetStarted = () => {
     password: "",
     confirmPassword: "",
     role: "user",
+    phone: "",
+    address: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -74,6 +78,8 @@ const GetStarted = () => {
         email: formData.email,
         password: formData.password,
         role: formData.role,
+        phone: formData.phone,
+        address: formData.address,
       });
 
       if (result.success) {
@@ -165,6 +171,44 @@ const GetStarted = () => {
                 </div>
               </div>
 
+              {/* Phone Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <PhoneIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+              </div>
+
+              {/* Address Field */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Address
+                </label>
+                <div className="relative">
+                  <MapPinIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
+                    placeholder="Enter your address"
+                  />
+                </div>
+              </div>
+
               {/* Password Field */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -247,9 +291,14 @@ const GetStarted = () => {
                     <option value="admin">Administrator Account</option>
                   </select>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Note: Admin role is for development only; assign via backend
-                  in production.
+                <p className="text-2xs text-blue-600 mt-1">
+                  All ready have account?{" "}
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="underline text-green-500"
+                  >
+                    Login
+                  </button>
                 </p>
               </div>
 
@@ -268,22 +317,6 @@ const GetStarted = () => {
                 )}
               </motion.button>
             </form>
-
-            <div className="mt-8 text-center">
-              <p className="text-sm text-gray-600">
-                By creating an account, you agree to our{" "}
-                <a href="/terms" className="text-blue-600 hover:text-blue-700">
-                  Terms of Service
-                </a>{" "}
-                and{" "}
-                <a
-                  href="/privacy"
-                  className="text-blue-600 hover:text-blue-700"
-                >
-                  Privacy Policy
-                </a>
-              </p>
-            </div>
           </motion.div>
         </div>
       </div>
