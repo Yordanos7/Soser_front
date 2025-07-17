@@ -22,11 +22,10 @@ const Office = () => {
       city: "Dangila",
       region: "Amahara",
       address: "Dangila , kebela 05 Awi Zone, Ethiopia",
-      phone: "+251-11-661-2345",
+      phone: "+251582211539",
       email: "info@sosser.coop",
       hours: {
         weekdays: "8:00 AM - 5:00 PM",
-        saturday: "8:00 AM - 12:00 PM",
         sunday: "Closed",
       },
       services: [
@@ -36,9 +35,9 @@ const Office = () => {
         "Digital Banking Support",
         "Customer Service",
       ],
-      manager: "Mr. Aschu ....",
+      manager: "Mr. Aschalew Mohamed Aliyu ",
       staff: 45,
-      established: "2015",
+      established: "2002",
       featured: true,
       coordinates: { lat: 9.032, lng: 38.7615 },
     },
@@ -52,7 +51,6 @@ const Office = () => {
       email: "Injbara@sosser.coop",
       hours: {
         weekdays: "8:00 AM - 5:00 PM",
-        saturday: "8:00 AM - 12:00 PM",
         sunday: "Closed",
       },
       services: [
@@ -64,7 +62,7 @@ const Office = () => {
       ],
       manager: "Mr. Aschu ....",
       staff: 18,
-      established: "2021",
+      established: "2002",
       featured: true,
       coordinates: { lat: 11.5954, lng: 37.3914 },
     },
@@ -78,7 +76,6 @@ const Office = () => {
       email: "Fageta@sosser.coop",
       hours: {
         weekdays: "8:00 AM - 5:00 PM",
-        saturday: "8:00 AM - 12:00 PM",
         sunday: "Closed",
       },
       services: [
@@ -90,7 +87,7 @@ const Office = () => {
       ],
       manager: "Mr. Aschu ....",
       staff: 15,
-      established: "2022",
+      established: "2002",
       featured: true,
       coordinates: { lat: 13.4967, lng: 39.4755 },
     },
@@ -104,7 +101,6 @@ const Office = () => {
       email: "Jawi@sosser.coop",
       hours: {
         weekdays: "8:00 AM - 5:00 PM",
-        saturday: "8:00 AM - 12:00 PM",
         sunday: "Closed",
       },
       services: [
@@ -116,11 +112,10 @@ const Office = () => {
       ],
       manager: "Mr.Aschu ....",
       staff: 12,
-      established: "2022",
+      established: "2002",
       featured: false,
       coordinates: { lat: 7.0621, lng: 38.4755 },
     },
-
     {
       id: 7,
       name: "Dangila Branch",
@@ -143,43 +138,9 @@ const Office = () => {
       ],
       manager: "Mr. Getu Tsegaye",
       staff: 12,
-      established: "2024",
+      established: "2002",
       featured: true,
       coordinates: { lat: 11.2667, lng: 36.8333 },
-    },
-  ];
-
-  const regions = [
-    { name: "All Regions", count: offices.length, active: true },
-    {
-      name: "Addis Ababa",
-      count: offices.filter((office) => office.region === "Addis Ababa").length,
-      active: false,
-    },
-    {
-      name: "Amhara",
-      count: offices.filter((office) => office.region === "Amhara").length,
-      active: false,
-    },
-    {
-      name: "Oromia",
-      count: offices.filter((office) => office.region === "Oromia").length,
-      active: false,
-    },
-    {
-      name: "Tigray",
-      count: offices.filter((office) => office.region === "Tigray").length,
-      active: false,
-    },
-    {
-      name: "SNNPR",
-      count: offices.filter((office) => office.region === "SNNPR").length,
-      active: false,
-    },
-    {
-      name: "Dire Dawa",
-      count: offices.filter((office) => office.region === "Dire Dawa").length,
-      active: false,
     },
   ];
 
@@ -187,27 +148,16 @@ const Office = () => {
     { label: "Total Offices", value: offices.length, icon: BuildingOfficeIcon },
     {
       label: "Regions Served",
-      value: new Set(offices.map((office) => office.region)).size,
+      value: "1",
       icon: MapPinIcon,
     },
     {
       label: "Total Staff",
-      value: offices.reduce((total, office) => total + office.staff, 0),
+      value: "427+",
       icon: UserGroupIcon,
     },
-    { label: "Years of Service", value: "4+", icon: ClockIcon },
+    { label: "Years of Service", value: "15+", icon: ClockIcon },
   ];
-
-  const mapStyles = {
-    height: "450px",
-    width: "100%",
-    borderRadius: "8px",
-  };
-
-  const defaultCenter = {
-    lat: 9.145, // Center of Ethiopia
-    lng: 40.4897,
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
@@ -279,107 +229,109 @@ const Office = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-8">
             Main Offices
           </h2>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {offices
               .filter((office) => office.featured)
               .slice(0, 1)
               .map((office, index) => (
-                <motion.div
-                  key={office.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
-                >
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900">
-                        {office.name}
-                      </h3>
-                      <p className="text-blue-600 font-semibold">
-                        {office.city}, {office.region}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                        Est. {office.established}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-start">
-                      <MapPinIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                <React.Fragment key={office.id}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                    className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <div className="flex items-center justify-between mb-6">
                       <div>
-                        <p className="font-medium text-gray-900">Address</p>
-                        <p className="text-gray-600">{office.address}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <PhoneIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
-                      <div>
-                        <p className="font-medium text-gray-900">Phone</p>
-                        <p className="text-gray-600">{office.phone}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <EnvelopeIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
-                      <div>
-                        <p className="font-medium text-gray-900">Email</p>
-                        <p className="text-gray-600">{office.email}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <ClockIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          Business Hours
-                        </p>
-                        <p className="text-gray-600">
-                          Mon-Fri: {office.hours.weekdays}
-                        </p>
-                        <p className="text-gray-600">
-                          Saturday: {office.hours.saturday}
-                        </p>
-                        <p className="text-gray-600">
-                          Sunday: {office.hours.sunday}
+                        <h3 className="text-2xl font-bold text-gray-900">
+                          {office.name}
+                        </h3>
+                        <p className="text-blue-600 font-semibold">
+                          {office.city}, {office.region}
                         </p>
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-gray-900 mb-3">
-                      Services Available:
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {office.services.map((service, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
-                        >
-                          {service}
+                      <div className="text-right">
+                        <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                          Est. {office.established}
                         </span>
-                      ))}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                    <div className="text-sm text-gray-600">
-                      <p>
-                        <span className="font-medium">Manager:</span>{" "}
-                        {office.manager}
-                      </p>
-                      <p>
-                        <span className="font-medium">Staff:</span>{" "}
-                        {office.staff} employees
-                      </p>
+                    <div className="space-y-4 mb-6">
+                      <div className="flex items-start">
+                        <MapPinIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <div>
+                          <p className="font-medium text-gray-900">Address</p>
+                          <p className="text-gray-600">{office.address}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <PhoneIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <div>
+                          <p className="font-medium text-gray-900">Phone</p>
+                          <p className="text-gray-600">{office.phone}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <EnvelopeIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <div>
+                          <p className="font-medium text-gray-900">Email</p>
+                          <p className="text-gray-600">{office.email}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <ClockIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            Business Hours
+                          </p>
+                          <p className="text-gray-600">
+                            Mon-Fri: {office.hours.weekdays}
+                          </p>
+
+                          <p className="text-gray-600">
+                            Sunday: {office.hours.sunday}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <button className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200">
-                      Get Directions
-                    </button>
+
+                    <div className="mb-6">
+                      <h4 className="font-semibold text-gray-900 mb-3">
+                        Services Available:
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {office.services.map((service, idx) => (
+                          <span
+                            key={idx}
+                            className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
+                          >
+                            {service}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                      <div className="text-sm text-gray-600">
+                        <p>
+                          <span className="font-medium">Manager:</span>{" "}
+                          {office.manager}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Added image div */}
+                  <div className="overflow-hidden shadow-xl rounded-xl">
+                    <img
+                      src="/2.png"
+                      alt="Sosser Main Office Building"
+                      className="w-full h-full object-cover rounded-xl"
+                    />
                   </div>
-                </motion.div>
+                </React.Fragment>
               ))}
           </div>
         </div>
@@ -446,9 +398,7 @@ const Office = () => {
 
                 <div className="flex items-center justify-between">
                   <div className="text-xs text-gray-500">
-                    <p>
-                      Est. {office.established} • {office.staff} staff
-                    </p>
+                    <p>Est. {office.established}</p>
                   </div>
                   <button className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 text-sm">
                     Visit

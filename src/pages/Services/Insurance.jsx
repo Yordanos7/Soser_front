@@ -2,125 +2,85 @@ import React from "react";
 import { motion } from "framer-motion";
 import {
   ShieldCheckIcon,
-  HeartIcon,
-  HomeIcon,
-  TruckIcon,
-  UserGroupIcon,
+  ScaleIcon,
+  BanknotesIcon,
   DocumentTextIcon,
+  UserIcon,
+  HeartIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const Insurance = () => {
-  const insuranceTypes = [
+  const insuranceServices = [
     {
       id: 1,
-      name: "Health Insurance",
-      icon: HeartIcon,
-      coverage: "Up to 1,000,000 ETB",
-      premium: "From 2,500 ETB/year",
+      name: "Life Loan Insurance",
+      icon: ScaleIcon,
       description:
-        "Comprehensive health coverage for you and your family including hospitalization, medication, and emergency care.",
-      benefits: [
-        "Hospitalization coverage",
-        "Outpatient services",
-        "Emergency care",
-        "Medication coverage",
-        "Preventive care",
-      ],
+        "Protection remaining that covers the loan repayment in case of death of either debtor or debtor's husband/wife with funeral service benefit of 1,000 ETB.",
+      coverage: "Loan amount coverage + 1,000 ETB funeral benefit",
+      benefits: ["Financial Protection", "Funeral Service Benefit"],
     },
     {
       id: 2,
-      name: "Property Insurance",
-      icon: HomeIcon,
-      coverage: "Up to 5,000,000 ETB",
-      premium: "From 5,000 ETB/year",
+      name: "Saving Led Life Insurance",
+      icon: BanknotesIcon,
       description:
-        "Protect your home and belongings against fire, theft, natural disasters, and other covered perils.",
-      benefits: [
-        "Fire damage coverage",
-        "Theft protection",
-        "Natural disaster coverage",
-        "Personal property",
-        "Temporary housing",
-      ],
-    },
-    {
-      id: 3,
-      name: "Vehicle Insurance",
-      icon: TruckIcon,
-      coverage: "Up to 2,000,000 ETB",
-      premium: "From 3,000 ETB/year",
-      description:
-        "Complete vehicle protection including third-party liability, comprehensive coverage, and roadside assistance.",
-      benefits: [
-        "Third-party liability",
-        "Collision coverage",
-        "Theft protection",
-        "Roadside assistance",
-        "Glass coverage",
-      ],
-    },
-    {
-      id: 4,
-      name: "Life Insurance",
-      icon: UserGroupIcon,
-      coverage: "Up to 3,000,000 ETB",
-      premium: "From 1,500 ETB/year",
-      description:
-        "Financial security for your loved ones with term life and whole life insurance options.",
-      benefits: [
-        "Death benefit",
-        "Terminal illness coverage",
-        "Disability benefits",
-        "Savings component",
-        "Tax advantages",
-      ],
+        "Protection remaining that provides double the balance of saving in case of death of either saver or saver's husband/wife with funeral service benefit of 500 ETB.",
+      coverage: "2x savings balance + 500 ETB funeral benefit",
+      benefits: ["Enhanced Payout", "Funeral Service Benefit"],
     },
   ];
+
+  const insuranceDefinition = {
+    title: "What is Insurance?",
+    description:
+      "Insurance is an agreement or a contract between an individual or business with an insurance company to help provide financial protection and mitigate the risks associated with certain situations or events.",
+    icon: ShieldCheckIcon,
+  };
 
   const claimProcess = [
     {
       step: 1,
-      title: "Report Incident",
-      description: "Contact us immediately to report your claim",
+      title: "Notification",
+      description: "Inform us immediately about the claim event",
     },
     {
       step: 2,
-      title: "Submit Documents",
-      description: "Provide required documentation and evidence",
+      title: "Documentation",
+      description: "Submit required documents (death certificate, policy copy)",
     },
     {
       step: 3,
-      title: "Assessment",
-      description: "Our team evaluates your claim",
+      title: "Verification",
+      description: "Our team verifies the claim details",
     },
     {
       step: 4,
-      title: "Settlement",
-      description: "Receive your compensation promptly",
+      title: "Benefit Payment",
+      description: "Receive the insurance benefit and funeral service payment",
     },
   ];
 
   const features = [
     {
-      icon: ShieldCheckIcon,
-      title: "Reliable Coverage",
-      description:
-        "Comprehensive protection you can count on when you need it most.",
-    },
-    {
-      icon: DocumentTextIcon,
-      title: "Simple Claims",
-      description:
-        "Straightforward claims process with quick settlements and minimal paperwork.",
+      icon: UserIcon,
+      title: "Family Protection",
+      description: "Secure your family's financial future",
     },
     {
       icon: HeartIcon,
-      title: "Customer Care",
-      description:
-        "24/7 customer support and dedicated claims assistance team.",
+      title: "Peace of Mind",
+      description: "Know your loved ones are protected",
+    },
+    {
+      icon: DocumentTextIcon,
+      title: "Simple Process",
+      description: "Easy application and claim procedures",
     },
   ];
 
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -134,14 +94,35 @@ const Insurance = () => {
             Insurance Services
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Protect what matters most with our comprehensive insurance solutions
-            designed for Ethiopian families and businesses.
+            Financial protection solutions designed for families and borrowers
           </p>
         </motion.div>
 
-        {/* Insurance Types */}
+        {/* Insurance Definition */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white rounded-xl shadow-lg p-8 mb-16"
+        >
+          <div className="flex items-start">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 mt-1">
+              <insuranceDefinition.icon className="w-6 h-6 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                {insuranceDefinition.title}
+              </h2>
+              <p className="text-gray-600 text-lg">
+                {insuranceDefinition.description}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Insurance Services */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {insuranceTypes.map((insurance, index) => (
+          {insuranceServices.map((insurance, index) => (
             <motion.div
               key={insurance.id}
               initial={{ opacity: 0, y: 20 }}
@@ -158,19 +139,11 @@ const Insurance = () => {
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
-                  <p className="text-sm text-gray-500">Coverage Limit</p>
-                  <p className="font-semibold text-gray-900">
-                    {insurance.coverage}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Premium</p>
-                  <p className="font-semibold text-gray-900">
-                    {insurance.premium}
-                  </p>
-                </div>
+              <div className="mb-6">
+                <p className="text-sm text-gray-500 mb-1">Coverage Includes:</p>
+                <p className="font-semibold text-gray-900">
+                  {insurance.coverage}
+                </p>
               </div>
 
               <p className="text-gray-600 mb-6">{insurance.description}</p>
@@ -187,8 +160,11 @@ const Insurance = () => {
                 ))}
               </div>
 
-              <button className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200">
-                Get Quote
+              <button
+                className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200"
+                onClick={() => navigate("/get-started")}
+              >
+                Apply Now
               </button>
             </motion.div>
           ))}
@@ -202,7 +178,7 @@ const Insurance = () => {
           className="bg-white rounded-xl shadow-lg p-8 mb-16"
         >
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Why Choose Sosser Insurance?
+            Why Choose Our Insurance?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
@@ -244,7 +220,27 @@ const Insurance = () => {
           </div>
         </motion.div>
 
-        {/* Emergency Contact */}
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="text-center"
+        >
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Need Help Choosing?
+          </h2>
+          <p className="text-gray-600 mb-8">
+            Our insurance advisors are ready to help you select the right
+            coverage.
+          </p>
+          <button
+            className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-8 py-3 rounded-full hover:from-blue-700 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+            onClick={() => navigate("/contact/offices")}
+          >
+            Get our office
+          </button>
+        </motion.div>
       </div>
     </div>
   );

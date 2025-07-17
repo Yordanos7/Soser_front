@@ -19,8 +19,8 @@ const Events = () => {
     const fetchEvents = async () => {
       try {
         const response = await api.get("/events");
-        if (response.data && response.data.events) {
-          const events = response.data.events.map((event) => ({
+        if (response.data) {
+          const events = response.data.map((event) => ({
             ...event,
             time: `${event.startTime} - ${event.endTime}`,
             type: event.eventType,

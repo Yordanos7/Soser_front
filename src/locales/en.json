@@ -101,6 +101,10 @@
       ],
       "view_all": "View All Announcements"
     },
+    "events": {
+      "title": "Upcoming Events",
+      "view_all": "View All Events"
+    },
     "latest_news": {
       "title": "Latest News",
       "items": [

@@ -142,22 +142,24 @@ const Navbar = () => {
           : "bg-white/90 backdrop-blur-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 lg:h-20 ">
+      <div className="w-full mx-auto">
+        <div className="flex h-16 lg:h-20 items-center">
           {/* Logo and Language Switcher */}
-          <div className="flex items-center space-x-4 mr-5">
-            <Link to="/" className="flex items-center space-x-2 mr-10">
+          <div className="flex-shrink-0 flex items-center pl-4 lg:pl-6">
+            <Link to="/" className="flex items-center space-x-2">
               <img
                 src="/favicon.ico"
                 alt="Logo"
-                className="w-10 h-10 lg:w-12 lg:h-12 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200 transform hover:scale-105"
+                className="w-7 h-7 lg:w-10 lg:h-10 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200 transform hover:scale-105"
               />
-              <span className="text-xl lg:text-2xl font-bold text-gray-800">
-                {t("navbar.logo")}
+              <span className="text-sm lg:text-base font-bold text-gray-800 whitespace-nowrap">
+                <span className="block">Soser Saving & Credit</span>
+                <span className="block">Cooperative Union LTD</span>
               </span>
             </Link>
+
             {/* Language Switcher (Desktop) */}
-            <div className="hidden lg:block relative ml-10">
+            <div className="hidden lg:block relative ml-4">
               <button
                 className="flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
                 onClick={() =>
@@ -203,62 +205,64 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1 ">
-            {navItems.map((item) => (
-              <div key={item.name} className="relative ">
-                {item.dropdown ? (
-                  <div
-                    className="relative"
-                    onMouseEnter={() => setActiveDropdown(item.name)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  >
-                    <button className="flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200">
-                      <item.icon className="w-4 h-4" />
-                      <span className="font-medium">{item.name}</span>
-                      <ChevronDownIcon
-                        className={`w-4 h-4 transition-transform duration-200 ${
-                          activeDropdown === item.name ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
+          <div className="hidden lg:flex flex-1 items-center justify-between text-black h-full px-6">
+            <div className="flex items-center space-x-1">
+              {navItems.map((item) => (
+                <div key={item.name} className="relative">
+                  {item.dropdown ? (
+                    <div
+                      className="relative"
+                      onMouseEnter={() => setActiveDropdown(item.name)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                    >
+                      <button className="flex items-center px-3 py-2  hover:bg-blue-600 transition-colors duration-200 rounded">
+                        <item.icon className="w-4 h-4" />
+                        <span className="font-medium -mr-1">{item.name}</span>
+                        <ChevronDownIcon
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            activeDropdown === item.name ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
 
-                    <AnimatePresence>
-                      {activeDropdown === item.name && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-2"
-                        >
-                          {item.dropdown.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              to={subItem.path}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
-                            >
-                              {subItem.name}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link
-                    to={item.path}
-                    className={`flex items-center space-x-1 px-3 py-2 transition-colors duration-200 ${
-                      location.pathname === item.path
-                        ? "text-blue-600 bg-blue-50 rounded-lg"
-                        : "text-gray-700 hover:text-blue-600"
-                    }`}
-                  >
-                    <item.icon className="w-4 h-4" />
-                    <span className="font-medium">{item.name}</span>
-                  </Link>
-                )}
-              </div>
-            ))}
+                      <AnimatePresence>
+                        {activeDropdown === item.name && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50"
+                          >
+                            {item.dropdown.map((subItem) => (
+                              <Link
+                                key={subItem.name}
+                                to={subItem.path}
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                              >
+                                {subItem.name}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      className={`flex items-center space-x-1 px-3 py-2 transition-colors duration-200 rounded ${
+                        location.pathname === item.path
+                          ? "bg-blue-600 text-white"
+                          : "text-white hover:bg-blue-600"
+                      }`}
+                    >
+                      <item.icon className="w-4 h-4" />
+                      <span className="font-medium ml-1">{item.name}</span>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
 
             {/* Get Started Button */}
             <Link
@@ -271,16 +275,18 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-          >
-            {isMobileMenuOpen ? (
-              <XMarkIcon className="w-6 h-6" />
-            ) : (
-              <Bars3Icon className="w-6 h-6" />
-            )}
-          </button>
+          <div className="flex-1 flex justify-end pr-4 lg:hidden">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+            >
+              {isMobileMenuOpen ? (
+                <XMarkIcon className="w-6 h-6" />
+              ) : (
+                <Bars3Icon className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -293,6 +299,32 @@ const Navbar = () => {
               className="lg:hidden bg-white border-t border-gray-100"
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
+                {/* Language Switcher (Mobile) */}
+                <div className="px-3 py-2">
+                  <div className="flex space-x-4">
+                    <button
+                      onClick={() => changeLanguage("en")}
+                      className={`px-3 py-1 rounded ${
+                        i18n.language === "en"
+                          ? "bg-blue-100 text-blue-700"
+                          : "text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      English
+                    </button>
+                    <button
+                      onClick={() => changeLanguage("am")}
+                      className={`px-3 py-1 rounded ${
+                        i18n.language === "am"
+                          ? "bg-blue-100 text-blue-700"
+                          : "text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      አማርኛ
+                    </button>
+                  </div>
+                </div>
+
                 {navItems.map((item) => (
                   <div key={item.name}>
                     {item.dropdown ? (
@@ -345,46 +377,6 @@ const Navbar = () => {
                     )}
                   </div>
                 ))}
-
-                {/* Language Switcher (Mobile) */}
-                <div className="px-3 py-2">
-                  <button
-                    onClick={() => handleDropdownToggle("language")}
-                    className="w-full flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <span>{i18n.language === "en" ? "English" : "አማርኛ"}</span>
-                    </div>
-                    <ChevronDownIcon
-                      className={`w-4 h-4 transition-transform ${
-                        activeDropdown === "language" ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                  <AnimatePresence>
-                    {activeDropdown === "language" && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="ml-4 mt-1 space-y-1"
-                      >
-                        <button
-                          onClick={() => changeLanguage("en")}
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
-                        >
-                          English
-                        </button>
-                        <button
-                          onClick={() => changeLanguage("am")}
-                          className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
-                        >
-                          አማርኛ
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
 
                 <Link
                   to="/get-started"

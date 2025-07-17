@@ -51,13 +51,6 @@ const QuickActions = () => {
       color: "from-indigo-500 to-indigo-600",
     },
     {
-      title: "Publish News",
-      description: "Create and publish news articles",
-      icon: NewspaperIcon,
-      link: "/admin/news/new",
-      color: "from-teal-500 to-teal-600",
-    },
-    {
       title: "Manage Payments",
       description: "View and process payment transactions",
       icon: CreditCardIcon,

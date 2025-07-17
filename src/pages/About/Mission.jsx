@@ -8,6 +8,7 @@ import {
   GlobeAltIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const Mission = () => {
   const values = [
@@ -39,28 +40,44 @@ const Mission = () => {
 
   const goals = [
     {
-      title: "100,000 Members",
-      description: "Reach 100,000 active members across Ethiopia by 2025",
-      progress: 50,
+      title:
+        "Empowering the union to be outshined and mandated in the affairs of its members in many Aspects.",
+      description: "",
+      progress: 60,
     },
     {
-      title: "Digital Banking",
-      description:
-        "Complete digital transformation with mobile-first banking solutions",
-      progress: 75,
-    },
-    {
-      title: "Rural Expansion",
-      description: "Establish presence in 50 rural communities nationwide",
-      progress: 30,
-    },
-    {
-      title: "Financial Literacy",
-      description: "Provide financial education to 10,000 community members",
+      title:
+        "    Assessing the financial industry & utilizing best opportunities in asset formation  ",
+      description: "",
       progress: 65,
+    },
+    {
+      title:
+        "Building the capacity & in turn capacitating members ,Building agricultural business projects in rural areas like oilseed crushers, tractors finance  schemes for plough , selected animals breeding  schemes, poultry ,grain mills, cultured fishing ,bee management, warehouse building, irrigation schemes  etc.",
+      description: "",
+      progress: 70,
+    },
+    {
+      title:
+        "Creating, building and managing competitive environments among different members to enhance their service capacities",
+      description: "",
+      progress: 80,
+    },
+    {
+      title:
+        "Building luxuries transportation/ communication system between members and the union",
+      description: "",
+      progress: 70,
+    },
+    {
+      title:
+        "Enabling members to be manned with competent and diligent employees",
+      description: "",
+      progress: 50,
     },
   ];
 
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen pt-16 lg:pt-20 bg-gray-50">
       {/* Hero Section */}
@@ -112,10 +129,10 @@ const Mission = () => {
                 </h2>
               </div>
               <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                To empower individuals and communities through accessible,
-                secure, and inclusive financial services. We strive to bridge
-                the financial gap by providing innovative banking solutions that
-                promote economic growth and social development.
+                Addressing the social and economic issues faced by members and
+                their communities by offering financial products and services
+                that members can manage independently and that are not overly
+                complicated to access.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start space-x-3">
@@ -155,11 +172,8 @@ const Mission = () => {
                 <h2 className="text-3xl font-bold text-gray-800">Our Vision</h2>
               </div>
               <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                To become Ethiopia's leading digital savings and lending
-                cooperative, fostering prosperity and resilience in every
-                community we serve. We envision a future where financial
-                services are accessible to all, driving sustainable economic
-                development.
+                Becoming a leading cooperative bank that is continuously
+                accessible, preferred, and popular.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-start space-x-3">
@@ -171,7 +185,7 @@ const Mission = () => {
                 <li className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
                   <span className="text-gray-600">
-                    Universal access to quality financial services
+                    Becoming accessible to quality financial services
                   </span>
                 </li>
                 <li className="flex items-start space-x-3">
@@ -241,7 +255,7 @@ const Mission = () => {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Strategic Goals 2024-2025
+              Strategic Goals 2025 - 2030GC
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Our roadmap to achieving greater impact and serving more
@@ -302,7 +316,10 @@ const Mission = () => {
               Be part of the movement that's transforming financial services in
               Ethiopia. Together, we can build stronger communities.
             </p>
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
+            <button
+              className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+              onClick={() => navigate("/get-started")}
+            >
               Become a Member
             </button>
           </motion.div>

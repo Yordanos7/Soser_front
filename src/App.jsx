@@ -48,7 +48,6 @@ import AddEvent from "./pages/Admin/AddEvent";
 import AddVacancy from "./pages/Admin/AddVacancy";
 import ManageGallery from "./pages/Admin/ManageGallery";
 import ManageVideos from "./pages/Admin/ManageVideos";
-import AddNews from "./pages/Admin/AddNews";
 import Users from "./pages/Admin/Users";
 import ManagePayments from "./pages/Admin/ManagePayments";
 import ManageTestimonials from "./pages/Admin/ManageTestimonials";
@@ -152,14 +151,6 @@ function App() {
                   element={
                     //  <ProtectedRoute role="admin">
                     <Users />
-                    // </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/news/new"
-                  element={
-                    //  <ProtectedRoute role="admin">
-                    <AddNews />
                     // </ProtectedRoute>
                   }
                 />

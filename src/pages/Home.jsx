@@ -13,11 +13,15 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import Chart from "chart.js/auto";
+import { getAnnouncements } from "../api/announcement";
+import { getEvents } from "../api/event";
 
 const Home = () => {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [typedText, setTypedText] = useState("");
+  const [announcements, setAnnouncements] = useState([]);
+  const [events, setEvents] = useState([]);
   const fullText = t("home.hero.title_typed");
 
   const heroImages = ["./1.png", "./2.png", "./3.png", "./2.png"];
@@ -77,8 +81,28 @@ const Home = () => {
     },
   ];
 
-  const announcements = t("home.announcements.items", { returnObjects: true });
-  const latestNews = t("home.latest_news.items", { returnObjects: true });
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await getAnnouncements();
+        setAnnouncements(response);
+      } catch (error) {
+        console.error("Failed to fetch announcements:", error);
+      }
+    };
+
+    const fetchEvents = async () => {
+      try {
+        const response = await getEvents();
+        setEvents(response);
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      }
+    };
+
+    fetchAnnouncements();
+    fetchEvents();
+  }, []);
 
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
@@ -92,11 +116,31 @@ const Home = () => {
       chartInstance.current = new Chart(ctx, {
         type: "line",
         data: {
-          labels: ["2010", "2011", "2012", "2013", "2014", "2015"],
+          labels: [
+            "2002",
+            "2003",
+            "2004",
+            "2005",
+            "2006",
+            "2007",
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+          ],
           datasets: [
             {
               label: t("home.growth_insights.chart_label"),
-              data: [123, 158, 296, 301, 335, 386],
+              data: [
+                26, 32, 41, 50, 55, 69, 77, 103, 111, 123, 158, 296, 301, 335,
+                386, 427,
+              ],
               borderColor: "rgba(16, 185, 129, 1)",
               backgroundColor: "rgba(16, 185, 129, 0.2)",
               fill: true,
@@ -223,8 +267,24 @@ const Home = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
               {t("home.about.title")}
             </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+            <p className="text-lg text-gray-600 mb-4 leading-relaxed">
               {t("home.about.description")}
+              The name SOSER Union is derived from the local name of Mount
+              Sosser, situated at the border between Dangila and Fagita Lekoma
+              woredas. The office of the union is located in Dangla town
+              administration, 80 km from Bahir Dar, the Amhara National Regional
+              State capital, and 491 km from Addis Ababa. Sosser Saving & Credit
+              Cooperative Societies Union LTD was established on March 24, 2008
+              (GC) and certified by the ANRS Cooperative Agency under code
+              02/1729 on June 19, 2008 (GC). It was founded by 23 primary
+              cooperative societies with a paid-up capital share of 666,000.00
+              ETB and a membership of 28,194 individuals (23,775 male and 4,419
+              female). The union has since grown significantly, now comprising
+              427 primary member cooperative societies with a total membership
+              of 129,447 individuals (105,287 male and 24,160 female). As of
+              June 30, 2025 (GC), the union's financial position includes total
+              assets of 1,025,054,954.30 ETB, liabilities of 870,637,281.49 ETB,
+              and capital of 154,417,672.81 ETB.
             </p>
             <Link
               to="/about/mission"
@@ -316,9 +376,49 @@ const Home = () => {
               {t("home.growth_insights.description")}
             </p>
           </motion.div>
-          <div className="relative h-96">
+
+          <div className="relative h-96 mb-16">
             <canvas ref={chartRef} className="w-full h-full"></canvas>
           </div>
+
+          {/* Sosser Office Building Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+          >
+            <div className=" overflow-hidden shadow-xl">
+              <img
+                src="/2.png" // Replace with your actual image path
+                alt="Sosser Main Office Building"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+            <div className="bg-blue-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                Our Headquarters
+              </h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Our headquarters, located in Dangla town, serves as the central
+                hub for Soser Saving & Credit Cooperative Union LTD’s
+                operations. This facility supports our administrative functions
+                and member services, ensuring we deliver accessible and reliable
+                financial solutions to our members across seven districts. It
+                reflects our commitment to fostering financial inclusion and
+                empowering our community through straightforward and effective
+                cooperative services.
+              </p>
+              <Link
+                to="/contact/offices"
+                className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-semibold"
+              >
+                <span>Visit Our Locations</span>
+                <ArrowRightIcon className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -337,7 +437,7 @@ const Home = () => {
                 {t("home.announcements.title")}
               </h2>
               <div className="space-y-6">
-                {announcements.map((announcement, index) => (
+                {announcements.slice(0, 3).map((announcement, index) => (
                   <div
                     key={index}
                     className="bg-blue-50 rounded-lg p-6 hover:bg-blue-100 transition-colors duration-200"
@@ -351,9 +451,11 @@ const Home = () => {
                           {announcement.title}
                         </h3>
                         <p className="text-sm text-gray-500 mb-2">
-                          {announcement.date}
+                          {new Date(
+                            announcement.publishDate
+                          ).toLocaleDateString()}
                         </p>
-                        <p className="text-gray-600">{announcement.excerpt}</p>
+                        <p className="text-gray-600">{announcement.content}</p>
                       </div>
                     </div>
                   </div>
@@ -370,7 +472,7 @@ const Home = () => {
               </div>
             </motion.div>
 
-            {/* Latest News */}
+            {/* Events */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -378,28 +480,26 @@ const Home = () => {
               viewport={{ once: true }}
             >
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8">
-                {t("home.latest_news.title")}
+                {t("home.events.title")}
               </h2>
               <div className="space-y-6">
-                {latestNews.map((news, index) => (
+                {events.slice(0, 3).map((event, index) => (
                   <div
                     key={index}
-                    className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors duration-200"
+                    className="bg-green-50 rounded-lg p-6 hover:bg-green-100 transition-colors duration-200"
                   >
                     <div className="flex items-start space-x-4">
                       <div className="flex-shrink-0">
-                        <UserIcon className="w-6 h-6 text-green-600" />
+                        <CalendarDaysIcon className="w-6 h-6 text-green-600" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-800 mb-2">
-                          {news.title}
+                          {event.title}
                         </h3>
-                        <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
-                          <span>{news.date}</span>
-                          <span>•</span>
-                          <span>{news.author}</span>
-                        </div>
-                        <p className="text-gray-600">{news.excerpt}</p>
+                        <p className="text-sm text-gray-500 mb-2">
+                          {new Date(event.date).toLocaleDateString()}
+                        </p>
+                        <p className="text-gray-600">{event.description}</p>
                       </div>
                     </div>
                   </div>
@@ -407,10 +507,10 @@ const Home = () => {
               </div>
               <div className="mt-8">
                 <Link
-                  to="/news/announcements"
+                  to="/news/events"
                   className="inline-flex items-center space-x-2 text-green-600 hover:text-green-700 font-semibold"
                 >
-                  <span>{t("home.latest_news.view_all")}</span>
+                  <span>{t("home.events.view_all")}</span>
                   <ArrowRightIcon className="w-4 h-4" />
                 </Link>
               </div>

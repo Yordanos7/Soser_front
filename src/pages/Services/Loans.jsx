@@ -7,64 +7,104 @@ import {
   AcademicCapIcon,
   ClockIcon,
   CheckCircleIcon,
+  BuildingStorefrontIcon,
+  BuildingOfficeIcon,
+  WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 const Loans = () => {
-  const loanTypes = [
+  // Loan types based on duration from your image
+  const durationLoans = [
     {
       id: 1,
-      name: "Personal Loans",
-      icon: CurrencyDollarIcon,
-      description:
-        "Flexible personal loans for various needs including medical expenses, education, or personal projects.",
+      name: "Short Term Loan",
+      icon: ClockIcon,
+      description: "Loan extending to one year with 13% interest per annum.",
       features: [
+        "Up to 1 year duration",
+        "13% interest rate",
         "Quick approval",
-        "Flexible repayment",
-        "No collateral required",
-        "Competitive rates",
+        "Flexible repayment options",
       ],
     },
     {
       id: 2,
-      name: "Agricultural Loans",
-      icon: TruckIcon,
-
+      name: "Middle Term Loan",
+      icon: ClockIcon,
       description:
-        "Specialized loans for farmers and agricultural businesses to boost productivity and income.",
+        "Loan extending from one to five years with 13% interest per annum.",
       features: [
-        "Seasonal payment options",
-        "Equipment financing",
-        "Crop insurance coverage",
-        "Agricultural expertise",
+        "1-5 years duration",
+        "13% interest rate",
+        "Medium-term financing",
+        "Business growth support",
       ],
     },
     {
       id: 3,
-      name: "Home Loans",
-      icon: HomeIcon,
-
+      name: "Long Term Loan",
+      icon: ClockIcon,
       description:
-        "Affordable housing loans to help you build or purchase your dream home.",
+        "Loan extending from five to ten years with 13% interest per annum.",
       features: [
-        "Long-term financing",
-        "Property insurance",
-        "Construction monitoring",
-        "Flexible down payment",
+        "5-10 years duration",
+        "13% interest rate",
+        "Long-term investment",
+        "Large project financing",
+      ],
+    },
+  ];
+
+  // Loan types based on purpose from your image
+  const purposeLoans = [
+    {
+      id: 4,
+      name: "Manufacturing Loan",
+      icon: BuildingOfficeIcon,
+      description: "Loan disbursed for manufacturing purposes.",
+      features: [
+        "Equipment financing",
+        "Factory setup",
+        "Raw material purchase",
+        "Production expansion",
       ],
     },
     {
-      id: 4,
-      name: "Education Loans",
-      icon: AcademicCapIcon,
-
-      description:
-        "Investment in your future through education financing for higher studies.",
+      id: 5,
+      name: "Agricultural Loan",
+      icon: TruckIcon,
+      description: "Loan for agricultural development and farming activities.",
       features: [
-        "Deferred payments",
-        "Study abroad support",
-        "Course fee coverage",
-        "Living expense support",
+        "Farm equipment",
+        "Seed and fertilizer",
+        "Irrigation systems",
+        "Livestock purchase",
+      ],
+    },
+    {
+      id: 6,
+      name: "Construction Loan",
+      icon: WrenchScrewdriverIcon,
+      description:
+        "Financing for construction projects and real estate development.",
+      features: [
+        "Building materials",
+        "Labor costs",
+        "Project financing",
+        "Property development",
+      ],
+    },
+    {
+      id: 7,
+      name: "Service Loan",
+      icon: BuildingStorefrontIcon,
+      description: "Loan for service-oriented businesses and enterprises.",
+      features: [
+        "Business expansion",
+        "Service equipment",
+        "Working capital",
+        "Technology upgrade",
       ],
     },
   ];
@@ -114,49 +154,92 @@ const Loans = () => {
             Loan Services
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Flexible loan solutions designed to meet your financial needs and
-            help you achieve your goals.
+            Flexible loan solutions at 13% interest rate designed to meet your
+            financial needs.
           </p>
         </motion.div>
 
-        {/* Loan Types */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          {loanTypes.map((loan, index) => (
-            <motion.div
-              key={loan.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
-            >
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                  <loan.icon className="w-6 h-6 text-blue-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900">
-                  {loan.name}
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 mb-6"></div>
-
-              <p className="text-gray-600 mb-6">{loan.description}</p>
-
-              <div className="space-y-2 mb-6">
-                {loan.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-center">
-                    <CheckCircleIcon className="w-5 h-5 text-green-500 mr-2" />
-                    <span className="text-gray-700">{feature}</span>
+        {/* Loan Types by Duration */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-16"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Loans by Duration
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {durationLoans.map((loan) => (
+              <div
+                key={loan.id}
+                className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                    <loan.icon className="w-6 h-6 text-blue-600" />
                   </div>
-                ))}
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    {loan.name}
+                  </h3>
+                </div>
+                <p className="text-gray-600 mb-6">{loan.description}</p>
+                <div className="space-y-2 mb-6">
+                  {loan.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center">
+                      <CheckCircleIcon className="w-5 h-5 text-green-500 mr-2" />
+                      <span className="text-gray-700">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+                <button className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200">
+                  Apply Now
+                </button>
               </div>
+            ))}
+          </div>
+        </motion.div>
 
-              <button className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200">
-                Apply Now
-              </button>
-            </motion.div>
-          ))}
-        </div>
+        {/* Loan Types by Purpose */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-16"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Loans by Purpose
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {purposeLoans.map((loan) => (
+              <div
+                key={loan.id}
+                className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                    <loan.icon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    {loan.name}
+                  </h3>
+                </div>
+                <p className="text-gray-600 mb-6">{loan.description}</p>
+                <div className="space-y-2 mb-6">
+                  {loan.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center">
+                      <CheckCircleIcon className="w-5 h-5 text-green-500 mr-2" />
+                      <span className="text-gray-700">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+                <button className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200">
+                  Apply Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Application Process */}
         <motion.div
@@ -169,7 +252,7 @@ const Loans = () => {
             Application Process
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {process.map((item, index) => (
+            {process.map((item) => (
               <div key={item.step} className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-xl font-bold">
                   {item.step}
@@ -203,24 +286,48 @@ const Loans = () => {
           </div>
         </motion.div>
 
-        {/* Interest Rate Calculator */}
+        {/* Interest Rate Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="bg-white rounded-xl shadow-lg p-8 mb-8"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+            Our Interest Rates
+          </h2>
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-xl text-gray-600 mb-4">
+              All our loans come with a competitive fixed interest rate of:
+            </p>
+            <div className="text-5xl font-bold text-blue-600 mb-6">
+              13% per annum
+            </div>
+            <p className="text-gray-600">
+              This rate applies to all loan durations and purposes, providing
+              you with predictable and transparent financing costs.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Call to Action */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
           className="bg-gradient-to-r from-blue-600 to-green-600 rounded-xl shadow-lg p-8 text-white text-center"
         >
-          <h2 className="text-3xl font-bold mb-4">Need Help Calculating?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Apply?</h2>
           <p className="text-xl mb-8">
-            Use our loan calculator to estimate your monthly payments and total
-            interest.
+            Start your loan application today or use our calculator to estimate
+            your payments.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
-              <Link to="/loan-calculator">Loan Calculator</Link>
+              <Link to="/loan-application">Apply Now</Link>
             </button>
             <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-200">
-              Contact Advisor
+              <Link to="/loan-calculator">Loan Calculator</Link>
             </button>
           </div>
         </motion.div>

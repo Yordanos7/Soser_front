@@ -42,11 +42,11 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3 text-gray-400">
                 <PhoneIcon className="w-5 h-5 flex-shrink-0" />
-                <span>{t("footer.contact.phone")}</span>
+                <span>+251582211539</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-400">
                 <EnvelopeIcon className="w-5 h-5 flex-shrink-0" />
-                <span>{t("footer.contact.email")}</span>
+                <span>POBOX 02</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-400">
                 <GlobeAltIcon className="w-5 h-5 flex-shrink-0" />

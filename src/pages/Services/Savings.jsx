@@ -8,95 +8,68 @@ import {
   CurrencyDollarIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const Savings = () => {
   const savingsAccounts = [
     {
-      name: "Regular Savings",
+      name: "Compulsory saving",
       icon: BanknotesIcon,
-      interestRate: "8.5%",
+      interestRate: "7%",
       features: [
-        "Competitive interest rates",
-        "No monthly maintenance fees",
+        "A mandatory saving type",
+        "bearing 7% daily accrued interest with no Tax",
         "Free online banking",
-        "Mobile app access",
-        "ATM card included",
+        "which can not withdrawn with out due purpose and members decision",
       ],
       gradient: "from-orange-300 to-orange-300",
     },
     {
-      name: "Irregular Savings",
+      name: "Voluntary Saving",
       icon: ChartBarIcon,
-      interestRate: "9.2%",
+      interestRate: " 7%",
       features: [
-        "Higher interest rates",
-        "Business banking tools",
-        "Bulk transaction support",
-        "Dedicated account manager",
-        "Monthly statements",
+        "Saving type bearing 7% interest per annum daily accrued",
+        "no tax which members can easily save and withdraw like most banks saving today",
       ],
       gradient: "from-green-500 to-green-600",
     },
     {
-      name: "Mobile Savings / Interest-Free Savings",
+      name: "Contractual Saving",
       icon: UserGroupIcon,
       interestRate: "10%",
       features: [
-        "Special youth rates",
-        "Financial literacy programs",
-        "Low minimum balance",
-        "Educational resources",
-        "Parental oversight options",
+        "The interest rate this saving reaches 10% per annum.",
+        "Contractual saving those saving based on agreement based on savers and the union certain terms and condition",
       ],
       gradient: "from-green-700 to-green-800",
     },
     {
-      name: "Childern Savings",
+      name: "current account",
       icon: UserGroupIcon,
-      interestRate: "10%",
-      minBalance: "50 ETB",
+      interestRate: "0%",
       features: [
-        "Special youth rates",
-        "Financial literacy programs",
-        "Low minimum balance",
-        "Educational resources",
-        "Parental oversight options",
+        "current account saving non interest bearing saving and very easy to withdraw.",
       ],
       gradient: "from-green-700 to-green-800",
     },
     {
-      name: "Time-Limited Savings",
+      name: "Children saving",
       icon: UserGroupIcon,
       interestRate: "10%",
       features: [
-        "Special youth rates",
-        "Financial literacy programs",
-        "Low minimum balance",
-        "Educational resources",
-        "Parental oversight options",
+        "The interest rate reaches 10% per annum to promote child saving",
+        "Children Saving a saving Type with similar conditions, but loos, like contractual savings",
       ],
       gradient: "from-green-700 to-green-800",
     },
     {
       name: "Special Savings",
       icon: UserGroupIcon,
-      interestRate: "10%",
+      interestRate: "11%",
       features: [
-        "Special youth rates",
-        "Financial literacy programs",
-        "Low minimum balance",
-        "Educational resources",
-        "Parental oversight options",
-      ],
-      gradient: "from-green-700 to-green-800",
-    },
-    {
-      name: "Institutional Savings",
-      icon: UserGroupIcon,
-      interestRate: "10%",
-      features: [
-        "Special youth rates",
-        "Financial literacy programs",
+        "The interest rate of this saving reaches 11% per annum.",
+        "Financial literacy ",
         "Low minimum balance",
         "Educational resources",
         "Parental oversight options",
@@ -108,23 +81,25 @@ const Savings = () => {
   const benefits = [
     {
       icon: ShieldCheckIcon,
-      title: "FDIC Protected",
+      title: "Insurance Products",
       description:
-        "Your deposits are protected up to 250,000 ETB by government insurance.",
+        "Protects loan repayments in case of the debtor’s or their spouse’s death, including a funeral service benefit of 1,000 birr.",
     },
     {
       icon: CurrencyDollarIcon,
-      title: "Competitive Rates",
+      title: "Variety of Savings Options",
       description:
-        "Earn more with our industry-leading interest rates on all savings accounts.",
+        "Offers a 7% daily accrued interest with no tax, providing a secure and rewarding option for members who commit to long-term savings with restricted withdrawals.",
     },
     {
       icon: CalendarDaysIcon,
-      title: "Flexible Terms",
+      title: "Diverse Service Offerings",
       description:
-        "Choose from various term lengths and withdrawal options that suit your needs.",
+        "Soser provides a range of financial services tailored to cooperative societies, including savings, credit, insurance, training, and technical support. This comprehensive approach ensures members have access to multiple financial tools to meet their needs",
     },
   ];
+
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen pt-16 lg:pt-20 bg-gray-50">
@@ -223,7 +198,10 @@ const Savings = () => {
                       </li>
                     ))}
                   </ul>
-                  <button className="w-full mt-6 bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 font-semibold">
+                  <button
+                    className="w-full mt-6 bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 font-semibold"
+                    onClick={() => navigate("/get-started")}
+                  >
                     Open Account
                   </button>
                 </div>
@@ -289,7 +267,10 @@ const Savings = () => {
               Open your savings account online in minutes and start earning
               competitive returns on your money.
             </p>
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
+            <button
+              className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+              onClick={() => navigate("/get-started")}
+            >
               Open Savings Account
             </button>
           </motion.div>
