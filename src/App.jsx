@@ -52,6 +52,7 @@ import Users from "./pages/Admin/Users";
 import ManagePayments from "./pages/Admin/ManagePayments";
 import ManageTestimonials from "./pages/Admin/ManageTestimonials";
 import ManageDocuments from "./pages/Admin/ManageDocuments";
+import ManageComments from "./pages/Admin/ManageComments";
 
 function App() {
   return (
@@ -175,6 +176,14 @@ function App() {
                   element={
                     //  <ProtectedRoute role="admin">
                     <ManageDocuments />
+                    // </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/comments"
+                  element={
+                    //  <ProtectedRoute role="admin">
+                    <ManageComments />
                     // </ProtectedRoute>
                   }
                 />

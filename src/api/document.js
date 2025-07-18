@@ -28,9 +28,10 @@ export const deleteDocument = async (id) => {
   return response.data;
 };
 
-export const downloadDocument = async (id) => {
+export const downloadDocument = async (id, onDownloadProgress) => {
   const response = await axios.get(`/documents/download/${id}`, {
     responseType: "blob",
+    onDownloadProgress,
   });
   return response.data;
 };

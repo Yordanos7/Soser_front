@@ -161,7 +161,7 @@ const Navbar = () => {
             {/* Language Switcher (Desktop) */}
             <div className="hidden lg:block relative ml-4">
               <button
-                className="flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+                className="flex items-center space-x-1 px-3 py-2 text-gray-700 hover:text-amber-500  transition-colors duration-200"
                 onClick={() =>
                   setActiveDropdown(
                     activeDropdown === "language" ? null : "language"
@@ -188,13 +188,13 @@ const Navbar = () => {
                   >
                     <button
                       onClick={() => changeLanguage("en")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-amber-500 transition-colors duration-200"
                     >
                       English
                     </button>
                     <button
                       onClick={() => changeLanguage("am")}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-amber-500 transition-colors duration-200"
                     >
                       አማርኛ
                     </button>
@@ -215,7 +215,7 @@ const Navbar = () => {
                       onMouseEnter={() => setActiveDropdown(item.name)}
                       onMouseLeave={() => setActiveDropdown(null)}
                     >
-                      <button className="flex items-center px-3 py-2  hover:bg-blue-600 transition-colors duration-200 rounded">
+                      <button className="flex items-center px-3 py-2 text-gray-700 hover:text-amber-500  transition-colors duration-200 rounded">
                         <item.icon className="w-4 h-4" />
                         <span className="font-medium -mr-1">{item.name}</span>
                         <ChevronDownIcon
@@ -238,7 +238,7 @@ const Navbar = () => {
                               <Link
                                 key={subItem.name}
                                 to={subItem.path}
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-amber-500  transition-colors duration-200"
                               >
                                 {subItem.name}
                               </Link>
@@ -252,8 +252,8 @@ const Navbar = () => {
                       to={item.path}
                       className={`flex items-center space-x-1 px-3 py-2 transition-colors duration-200 rounded ${
                         location.pathname === item.path
-                          ? "bg-blue-600 text-white"
-                          : "text-white hover:bg-blue-600"
+                          ? "text-blue-600 bg-blue-50"
+                          : "text-gray-700 hover:text-amber-500 "
                       }`}
                     >
                       <item.icon className="w-4 h-4" />
@@ -267,7 +267,7 @@ const Navbar = () => {
             {/* Get Started Button */}
             <Link
               to="/get-started"
-              className="ml-4 bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-full hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="ml-4 bg-gradient-to-r from-blue-600 to-green-600 text-white px-6 py-2 rounded-full hover:text-amber-500  hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               <RocketLaunchIcon className="w-4 h-4" />
               <span className="font-medium">{t("navbar.get_started")}</span>
@@ -306,7 +306,7 @@ const Navbar = () => {
                       onClick={() => changeLanguage("en")}
                       className={`px-3 py-1 rounded ${
                         i18n.language === "en"
-                          ? "bg-blue-100 text-blue-700"
+                          ? "bg-blue-100 text-amber-500"
                           : "text-gray-700 hover:bg-gray-100"
                       }`}
                     >
@@ -316,7 +316,7 @@ const Navbar = () => {
                       onClick={() => changeLanguage("am")}
                       className={`px-3 py-1 rounded ${
                         i18n.language === "am"
-                          ? "bg-blue-100 text-blue-700"
+                          ? "bg-blue-100 text-amber-500"
                           : "text-gray-700 hover:bg-gray-100"
                       }`}
                     >
@@ -369,7 +369,11 @@ const Navbar = () => {
                       <Link
                         to={item.path}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
+                        className={`flex items-center space-x-2 px-3 py-2 rounded-md ${
+                          location.pathname === item.path
+                            ? "bg-blue-50 text-blue-600"
+                            : "text-gray-700 hover:bg-gray-50"
+                        }`}
                       >
                         <item.icon className="w-5 h-5" />
                         <span>{item.name}</span>

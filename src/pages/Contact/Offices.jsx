@@ -8,20 +8,18 @@ import {
   BuildingOfficeIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
+import CommentForm from "../../components/CommentForm";
 
 const Office = () => {
   const [selectedOffice, setSelectedOffice] = useState(null);
 
-  const handleClick = () => {
-    navigate("http://localhost:3000");
-  };
   const offices = [
     {
       id: 1,
       name: "Head Office",
       city: "Dangila",
       region: "Amahara",
-      address: "Dangila , kebela 05 Awi Zone, Ethiopia",
+      address: "Dangila, kebela 05 Awi Zone, Ethiopia",
       phone: "+251582211539",
       email: "info@sosser.coop",
       hours: {
@@ -35,127 +33,19 @@ const Office = () => {
         "Digital Banking Support",
         "Customer Service",
       ],
-      manager: "Mr. Aschalew Mohamed Aliyu ",
+      manager: "Mr. Aschalew Mohamed Aliyu",
       staff: 45,
       established: "2002",
       featured: true,
       coordinates: { lat: 9.032, lng: 38.7615 },
     },
-    {
-      id: 2,
-      name: "Injbara Branch",
-      city: "Injbara",
-      region: "Amhara",
-      address: "Kebele 07, Near Blue Nile Hotel",
-      phone: "+251-58-220-1234",
-      email: "Injbara@sosser.coop",
-      hours: {
-        weekdays: "8:00 AM - 5:00 PM",
-        sunday: "Closed",
-      },
-      services: [
-        "Savings Accounts",
-        "Agricultural Loans",
-        "Mobile Banking",
-        "Money Transfer",
-        "Financial Literacy",
-      ],
-      manager: "Mr. Aschu ....",
-      staff: 18,
-      established: "2002",
-      featured: true,
-      coordinates: { lat: 11.5954, lng: 37.3914 },
-    },
-    {
-      id: 3,
-      name: "Fageta Branch",
-      city: "Fageta",
-      region: "Amahara",
-      address: "Fageta, Main Road, Near Fageta center",
-      phone: "+251-34-440-5678",
-      email: "Fageta@sosser.coop",
-      hours: {
-        weekdays: "8:00 AM - 5:00 PM",
-        sunday: "Closed",
-      },
-      services: [
-        "Personal Loans",
-        "Business Loans",
-        "Insurance Services",
-        "Digital Payments",
-        "Youth Programs",
-      ],
-      manager: "Mr. Aschu ....",
-      staff: 15,
-      established: "2002",
-      featured: true,
-      coordinates: { lat: 13.4967, lng: 39.4755 },
-    },
-    {
-      id: 4,
-      name: "Jawi Branch",
-      city: "Jawi",
-      region: "Amahara",
-      address: "Jawi, Commercial Area",
-      phone: "+251-46-220-9876",
-      email: "Jawi@sosser.coop",
-      hours: {
-        weekdays: "8:00 AM - 5:00 PM",
-        sunday: "Closed",
-      },
-      services: [
-        "Savings Products",
-        "Microfinance",
-        "Agricultural Support",
-        "Women Empowerment",
-        "Community Banking",
-      ],
-      manager: "Mr.Aschu ....",
-      staff: 12,
-      established: "2002",
-      featured: false,
-      coordinates: { lat: 7.0621, lng: 38.4755 },
-    },
-    {
-      id: 7,
-      name: "Dangila Branch",
-      city: "Dangila",
-      region: "Amhara",
-      address: "Main Road, Near Dangila Market",
-      phone: "+251-58-221-7890",
-      email: "dangila@sosser.coop",
-      hours: {
-        weekdays: "8:00 AM - 5:00 PM",
-        saturday: "8:00 AM - 12:00 PM",
-        sunday: "Closed",
-      },
-      services: [
-        "Savings Accounts",
-        "Agricultural Loans",
-        "Microfinance",
-        "Mobile Banking",
-        "Financial Literacy",
-      ],
-      manager: "Mr. Getu Tsegaye",
-      staff: 12,
-      established: "2002",
-      featured: true,
-      coordinates: { lat: 11.2667, lng: 36.8333 },
-    },
+    // ... other office data
   ];
 
   const stats = [
     { label: "Total Offices", value: offices.length, icon: BuildingOfficeIcon },
-    {
-      label: "Regions Served",
-      value: "1",
-      icon: MapPinIcon,
-    },
-    {
-      label: "Total Staff",
-      value: "427+",
-      icon: UserGroupIcon,
-    },
+    { label: "Regions Served", value: "1", icon: MapPinIcon },
+    { label: "Total Staff", value: "427+", icon: UserGroupIcon },
     { label: "Years of Service", value: "15+", icon: ClockIcon },
   ];
 
@@ -188,7 +78,7 @@ const Office = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-lg p-6 text-center"
+              className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300"
             >
               <stat.icon className="w-8 h-8 text-blue-600 mx-auto mb-2" />
               <h3 className="text-2xl font-bold text-gray-900">{stat.value}</h3>
@@ -202,7 +92,7 @@ const Office = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-xl shadow-lg p-8 mb-12"
+          className="bg-white rounded-xl shadow-lg p-8 mb-12 hover:shadow-xl transition-shadow duration-300"
         >
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Office Locations Map
@@ -224,7 +114,7 @@ const Office = () => {
           </div>
         </motion.div>
 
-        {/* Featured Offices */}
+        {/* Featured Offices - Side by Side Layout */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">
             Main Offices
@@ -236,11 +126,12 @@ const Office = () => {
               .slice(0, 1)
               .map((office, index) => (
                 <React.Fragment key={office.id}>
+                  {/* Office Info Card */}
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
-                    className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
+                    className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300 flex flex-col"
                   >
                     <div className="flex items-center justify-between mb-6">
                       <div>
@@ -258,30 +149,30 @@ const Office = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-4 mb-6">
+                    <div className="space-y-4 mb-6 flex-grow">
                       <div className="flex items-start">
-                        <MapPinIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <MapPinIcon className="w-5 h-5 text-gray-400 mr-3 mt-1 flex-shrink-0" />
                         <div>
                           <p className="font-medium text-gray-900">Address</p>
                           <p className="text-gray-600">{office.address}</p>
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <PhoneIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <PhoneIcon className="w-5 h-5 text-gray-400 mr-3 mt-1 flex-shrink-0" />
                         <div>
                           <p className="font-medium text-gray-900">Phone</p>
                           <p className="text-gray-600">{office.phone}</p>
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <EnvelopeIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <EnvelopeIcon className="w-5 h-5 text-gray-400 mr-3 mt-1 flex-shrink-0" />
                         <div>
                           <p className="font-medium text-gray-900">Email</p>
                           <p className="text-gray-600">{office.email}</p>
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <ClockIcon className="w-5 h-5 text-gray-400 mr-3 mt-1" />
+                        <ClockIcon className="w-5 h-5 text-gray-400 mr-3 mt-1 flex-shrink-0" />
                         <div>
                           <p className="font-medium text-gray-900">
                             Business Hours
@@ -289,7 +180,6 @@ const Office = () => {
                           <p className="text-gray-600">
                             Mon-Fri: {office.hours.weekdays}
                           </p>
-
                           <p className="text-gray-600">
                             Sunday: {office.hours.sunday}
                           </p>
@@ -313,7 +203,7 @@ const Office = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                    <div className="mt-auto pt-4 border-t border-gray-200">
                       <div className="text-sm text-gray-600">
                         <p>
                           <span className="font-medium">Manager:</span>{" "}
@@ -323,14 +213,25 @@ const Office = () => {
                     </div>
                   </motion.div>
 
-                  {/* Added image div */}
-                  <div className="overflow-hidden shadow-xl rounded-xl">
+                  {/* Office Image */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 + 0.2 }}
+                    className="relative rounded-xl overflow-hidden shadow-xl h-full min-h-[400px]"
+                  >
                     <img
                       src="/2.png"
-                      alt="Sosser Main Office Building"
-                      className="w-full h-full object-cover rounded-xl"
+                      alt={`${office.name} Building`}
+                      className="w-full h-full object-cover rounded-xl transition-transform duration-500 hover:scale-105"
                     />
-                  </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent flex items-end p-6">
+                      <div className="text-white">
+                        <h3 className="text-xl font-bold">{office.name}</h3>
+                        <p className="text-blue-200">{office.address}</p>
+                      </div>
+                    </div>
+                  </motion.div>
                 </React.Fragment>
               ))}
           </div>
@@ -410,34 +311,7 @@ const Office = () => {
         </div>
 
         {/* Contact CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="text-center mt-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-xl shadow-lg p-8 text-white"
-        >
-          <h2 className="text-3xl font-bold mb-4">
-            Can't Find a Nearby Office?
-          </h2>
-          <p className="text-xl mb-8">
-            We're expanding our network. Contact us to learn about upcoming
-            locations or to request services in your area.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-              Request New Location
-            </button>
-            <button
-              className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-200"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            >
-              Contact Support
-            </button>
-          </div>
-        </motion.div>
+        <CommentForm />
       </div>
     </div>
   );

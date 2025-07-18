@@ -9,8 +9,10 @@ import {
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Mission = () => {
+  const { user } = useAuth();
   const values = [
     {
       icon: HeartIcon,
@@ -309,19 +311,39 @@ const Mission = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Join Our Mission
-            </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Be part of the movement that's transforming financial services in
-              Ethiopia. Together, we can build stronger communities.
-            </p>
-            <button
-              className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
-              onClick={() => navigate("/get-started")}
-            >
-              Become a Member
-            </button>
+            {user ? (
+              <>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                  Give us your message or comment
+                </h2>
+                <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                  Your feedback is important to us. Let us know how we can
+                  improve our services.
+                </p>
+                <button
+                  className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+                  onClick={() => navigate("/contact/offices")}
+                >
+                  Contact Us
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                  Join Our Mission
+                </h2>
+                <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                  Be part of the movement that's transforming financial services
+                  in Ethiopia. Together, we can build stronger communities.
+                </p>
+                <button
+                  className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+                  onClick={() => navigate("/get-started")}
+                >
+                  Become a Member
+                </button>
+              </>
+            )}
           </motion.div>
         </div>
       </section>

@@ -15,13 +15,16 @@ import {
 import Chart from "chart.js/auto";
 import { getAnnouncements } from "../api/announcement";
 import { getEvents } from "../api/event";
+import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [typedText, setTypedText] = useState("");
   const [announcements, setAnnouncements] = useState([]);
   const [events, setEvents] = useState([]);
+  const [countersStarted, setCountersStarted] = useState(false);
   const fullText = t("home.hero.title_typed");
 
   const heroImages = ["./1.png", "./2.png", "./3.png", "./2.png"];
@@ -181,6 +184,81 @@ const Home = () => {
       }
     };
   }, [t]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !countersStarted) {
+            setCountersStarted(true);
+            startCounters();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const section = document.querySelector("#loan-disbursement-section");
+    if (section) observer.observe(section);
+
+    return () => {
+      if (section) observer.unobserve(section);
+    };
+  }, [countersStarted]);
+
+  const startCounters = () => {
+    const counters = [
+      {
+        element: document.querySelector("#short-term-loan"),
+        target: 40661181.81,
+      },
+      {
+        element: document.querySelector("#medium-term-loan"),
+        target: 1372700511.89,
+      },
+      { element: document.querySelector("#total-loan"), target: 1413361693 },
+    ];
+
+    const duration = 2000; // Animation duration in ms
+    const frameDuration = 1000 / 60; // 60fps
+    const totalFrames = Math.round(duration / frameDuration);
+
+    counters.forEach((counter) => {
+      if (!counter.element) return;
+
+      let frame = 0;
+      const countTo = counter.target;
+      const counterText = counter.element;
+
+      const animate = () => {
+        frame++;
+        const progress = frame / totalFrames;
+        const currentCount = Math.round(countTo * progress);
+
+        if (frame <= totalFrames) {
+          counterText.textContent = formatNumber(currentCount);
+          requestAnimationFrame(animate);
+        } else {
+          counterText.textContent = formatNumber(countTo);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    });
+  };
+
+  const formatNumber = (num) => {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(2) + "B";
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(2) + "M";
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(2) + "K";
+    }
+    return num.toString();
+  };
 
   return (
     <div className="pt-16 lg:pt-20">
@@ -359,8 +437,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Growth Insights Section */}
-      <section className="py-20 bg-white">
+      {/* Loan Disbursement Section */}
+      <section id="loan-disbursement-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -370,28 +448,59 @@ const Home = () => {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              {t("home.growth_insights.title")}
+              {t("Loan Disbursment")}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {t("home.growth_insights.description")}
+              {t("Loan Disbursment")}
             </p>
           </motion.div>
 
-          <div className="relative h-96 mb-16">
-            <canvas ref={chartRef} className="w-full h-full"></canvas>
+          {/* Large Loan Disbursement Numbers */}
+          <div className="flex flex-col items-center justify-center mb-16">
+            <div className="text-center mb-8">
+              <h3 className="text-xl font-semibold text-gray-700 mb-4">
+                Total Loan Disbursement
+              </h3>
+              <div className="text-5xl md:text-7xl font-bold text-blue-600">
+                <span id="total-loan">0</span>
+              </div>
+              <p className="text-gray-500 mt-2">ETB</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-2xl">
+              <div className="text-center p-6 border border-gray-200 rounded-lg">
+                <h4 className="text-lg font-semibold text-gray-700 mb-2">
+                  Short Term Loan
+                </h4>
+                <div className="text-3xl font-bold text-green-600">
+                  <span id="short-term-loan">0</span>
+                </div>
+                <p className="text-gray-500">ETB</p>
+              </div>
+
+              <div className="text-center p-6 border border-gray-200 rounded-lg">
+                <h4 className="text-lg font-semibold text-gray-700 mb-2">
+                  Medium Term Loan
+                </h4>
+                <div className="text-3xl font-bold text-purple-600">
+                  <span id="medium-term-loan">0</span>
+                </div>
+                <p className="text-gray-500">ETB</p>
+              </div>
+            </div>
           </div>
 
           {/* Sosser Office Building Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+            className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-12"
           >
-            <div className=" overflow-hidden shadow-xl">
+            <div className="overflow-hidden shadow-xl">
               <img
-                src="/2.png" // Replace with your actual image path
+                src="/2.png"
                 alt="Sosser Main Office Building"
                 className="w-full h-auto object-cover"
               />
@@ -402,7 +511,7 @@ const Home = () => {
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
                 Our headquarters, located in Dangla town, serves as the central
-                hub for Soser Saving & Credit Cooperative Union LTD’s
+                hub for Soser Saving & Credit Cooperative Union LTD's
                 operations. This facility supports our administrative functions
                 and member services, ensuring we deliver accessible and reliable
                 financial solutions to our members across seven districts. It
@@ -529,16 +638,16 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              {t("home.cta.title")}
+              {user ? `Welcome, ${user.name}` : t("home.cta.title")}
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
               {t("home.cta.description")}
             </p>
             <Link
-              to="/get-started"
+              to="/services/savings"
               className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center space-x-2"
             >
-              <span>{t("home.cta.get_started")}</span>
+              <span>Explore our services</span>
               <ArrowRightIcon className="w-5 h-5" />
             </Link>
           </motion.div>

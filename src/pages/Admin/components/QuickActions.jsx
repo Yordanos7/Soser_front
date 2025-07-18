@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   DocumentTextIcon,
@@ -6,13 +6,70 @@ import {
   BriefcaseIcon,
   PhotoIcon,
   UsersIcon,
-  NewspaperIcon,
   CreditCardIcon,
   ChartBarIcon,
+  TrashIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import {
+  getComments,
+  updateComment,
+  deleteComment,
+} from "../../../api/comment";
+import { useToast } from "@/components/ui/use-toast";
 
 const QuickActions = () => {
+  const { toast } = useToast();
+  const [comments, setComments] = useState([]);
+
+  const fetchComments = async () => {
+    try {
+      const data = await getComments();
+      setComments(data);
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  const handleMarkAsSeen = async (id) => {
+    try {
+      await updateComment(id, { seen: true });
+      toast({
+        title: "Success",
+        description: "Comment marked as seen.",
+      });
+      fetchComments();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to mark comment as seen.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteComment(id);
+      toast({
+        title: "Success",
+        description: "Comment deleted successfully.",
+      });
+      fetchComments();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete comment.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const quickActions = [
     {
       title: "Add Announcement",
@@ -28,7 +85,6 @@ const QuickActions = () => {
       link: "/admin/add-event",
       color: "from-green-500 to-green-600",
     },
-
     {
       title: "Post Vacancy",
       description: "Add a new job vacancy posting",
@@ -122,6 +178,52 @@ const QuickActions = () => {
                 </p>
               </motion.div>
             </Link>
+          ))}
+        </div>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="bg-white rounded-xl shadow-lg p-6 mt-6"
+      >
+        <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
+          <UsersIcon className="w-6 h-6 mr-2 text-gray-600" />
+          Recent Comments
+        </h2>
+        <div className="space-y-4">
+          {comments.slice(0, 5).map((comment) => (
+            <div
+              key={comment.id}
+              className={`p-4 border rounded-lg ${
+                comment.seen ? "bg-gray-100" : "bg-white"
+              }`}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="font-semibold">{comment.name}</p>
+                  <p className="text-sm text-gray-500">{comment.email}</p>
+                  <p className="text-sm text-gray-500">{comment.phone}</p>
+                  <p className="mt-2">{comment.comment}</p>
+                </div>
+                <div className="flex space-x-2">
+                  {!comment.seen && (
+                    <button
+                      onClick={() => handleMarkAsSeen(comment.id)}
+                      className="p-2 text-green-500 hover:text-green-700"
+                    >
+                      <CheckCircleIcon className="w-5 h-5" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDelete(comment.id)}
+                    className="p-2 text-red-500 hover:text-red-700"
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </motion.div>
