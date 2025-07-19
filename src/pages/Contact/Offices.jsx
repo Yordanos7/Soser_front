@@ -39,11 +39,82 @@ const Office = () => {
       featured: true,
       coordinates: { lat: 9.032, lng: 38.7615 },
     },
-    // ... other office data
+  ];
+
+  const branches = [
+    {
+      id: 2,
+      name: "Injibara Branch",
+      city: "Injibara",
+      region: "Amhara",
+      address: "Near Tana Hotel, Kebele 03",
+      phone: "+251582211540",
+      email: "injibara@sosser.coop",
+      hours: {
+        weekdays: "8:30 AM - 5:30 PM",
+        sunday: "Closed",
+      },
+      services: [
+        "All Banking Services",
+        "Loan Processing",
+        "Digital Banking Support",
+      ],
+      manager: "Mrs. Selamawit Abebe",
+      staff: 28,
+      established: "2010",
+      featured: false,
+      coordinates: { lat: 11.5937, lng: 37.3907 },
+      image: "/injibara.png",
+    },
+    {
+      id: 3,
+      name: "Adiskedam Branch",
+      city: "Adiskedam",
+      region: "Amhara",
+      address: "Main Road, Kebele 02",
+      phone: "+251582211541",
+      email: "Adiskedam@sosser.coop",
+      hours: {
+        weekdays: "8:00 AM - 5:00 PM",
+        sunday: "Closed",
+      },
+      services: ["All Banking Services", "Saving Accounts", "Mobile Banking"],
+      manager: "Mr. Getachew Mekonnen",
+      staff: 22,
+      established: "2015",
+      featured: false,
+      coordinates: { lat: 10.3333, lng: 37.7333 },
+      image: "/addiskidam.png",
+    },
+
+    {
+      id: 5,
+      name: "Jawi Branch",
+      city: "Jawi",
+      region: "Amhara",
+      address: "Town Center, Kebele 01",
+      phone: "+251582211543",
+      email: "Jawi@sosser.coop",
+      hours: {
+        weekdays: "8:00 AM - 5:00 PM",
+        sunday: "Closed",
+      },
+      services: ["Basic Banking Services", "Saving Accounts", "Mobile Banking"],
+      manager: "Mrs. Tigist Worku",
+      staff: 18,
+      established: "2018",
+      featured: false,
+      coordinates: { lat: 12.1167, lng: 37.7833 },
+      image: "/jawi.png",
+    },
   ];
 
   const stats = [
-    { label: "Total Offices", value: offices.length, icon: BuildingOfficeIcon },
+    {
+      label: "Total Offices",
+      value: offices.length + branches.length,
+      icon: BuildingOfficeIcon,
+    },
     { label: "Regions Served", value: "1", icon: MapPinIcon },
     { label: "Total Staff", value: "427+", icon: UserGroupIcon },
     { label: "Years of Service", value: "15+", icon: ClockIcon },
@@ -116,9 +187,7 @@ const Office = () => {
 
         {/* Featured Offices - Side by Side Layout */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            Main Offices
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Main Office</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {offices
@@ -237,73 +306,82 @@ const Office = () => {
           </div>
         </div>
 
-        {/* All Offices */}
-        <div>
+        {/* Branch Offices */}
+        <div className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            All Locations
+            Our Branches
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {offices.map((office, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {branches.map((branch, index) => (
               <motion.div
-                key={office.id}
+                key={branch.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + index * 0.05 }}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+                transition={{ delay: 0.5 + index * 0.1 }}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">
-                      {office.name}
+                {/* Branch Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={branch.image}
+                    alt={`${branch.name} Branch`}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-4">
+                    <h3 className="text-white font-bold text-lg">
+                      {branch.name}
                     </h3>
-                    <p className="text-blue-600 font-medium">{office.city}</p>
-                  </div>
-                  {office.featured && (
-                    <span className="text-yellow-500">⭐</span>
-                  )}
-                </div>
-
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center text-gray-600 text-sm">
-                    <MapPinIcon className="w-4 h-4 mr-2" />
-                    <span className="truncate">{office.address}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600 text-sm">
-                    <PhoneIcon className="w-4 h-4 mr-2" />
-                    <span>{office.phone}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600 text-sm">
-                    <ClockIcon className="w-4 h-4 mr-2" />
-                    <span>{office.hours.weekdays}</span>
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <p className="text-sm text-gray-500 mb-2">Key Services:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {office.services.slice(0, 3).map((service, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
-                      >
-                        {service}
-                      </span>
-                    ))}
-                    {office.services.length > 3 && (
-                      <span className="text-blue-600 text-xs">
-                        +{office.services.length - 3} more
-                      </span>
-                    )}
+                {/* Branch Info */}
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-blue-600 font-medium">{branch.city}</p>
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                      Est. {branch.established}
+                    </span>
                   </div>
-                </div>
 
-                <div className="flex items-center justify-between">
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-start">
+                      <MapPinIcon className="w-4 h-4 text-gray-400 mr-2 mt-1 flex-shrink-0" />
+                      <p className="text-sm text-gray-600">{branch.address}</p>
+                    </div>
+                    <div className="flex items-start">
+                      <PhoneIcon className="w-4 h-4 text-gray-400 mr-2 mt-1 flex-shrink-0" />
+                      <p className="text-sm text-gray-600">{branch.phone}</p>
+                    </div>
+                    <div className="flex items-start">
+                      <ClockIcon className="w-4 h-4 text-gray-400 mr-2 mt-1 flex-shrink-0" />
+                      <p className="text-sm text-gray-600">
+                        Mon-Fri: {branch.hours.weekdays}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <h4 className="text-xs font-semibold text-gray-900 mb-2">
+                      SERVICES:
+                    </h4>
+                    <div className="flex flex-wrap gap-1">
+                      {branch.services.slice(0, 3).map((service, idx) => (
+                        <span
+                          key={idx}
+                          className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
+                        >
+                          {service}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="text-xs text-gray-500">
-                    <p>Est. {office.established}</p>
+                    <p>
+                      <span className="font-medium">Manager:</span>{" "}
+                      {branch.manager}
+                    </p>
                   </div>
-                  <button className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 text-sm">
-                    Visit
-                  </button>
                 </div>
               </motion.div>
             ))}

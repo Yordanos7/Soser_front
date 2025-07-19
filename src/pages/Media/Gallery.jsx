@@ -133,7 +133,9 @@ const Gallery = () => {
           </div>
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
             <PhotoIcon className="w-8 h-8 text-red-600 mx-auto mb-2" />
-            <h3 className="text-2xl font-bold text-gray-900">2023</h3>
+            <h3 className="text-2xl font-bold text-gray-900">
+              {new Date().getFullYear()}
+            </h3>
             <p className="text-gray-600">Latest Year</p>
           </div>
         </motion.div>

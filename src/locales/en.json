@@ -43,13 +43,13 @@
     "hero": {
       "title_part1": "Empowering Communities,",
       "title_typed": "Grow with SOSER",
-      "description": "Welcome to Sosser – Your trusted financial partner for savings, loans, insurance, and digital banking solutions.",
+      "description": "Welcome to soser – Your trusted financial partner for savings, loans, insurance, and digital banking solutions.",
       "get_started": "Get Started Today",
       "learn_more": "Learn More"
     },
     "about": {
-      "title": "About Sosser",
-      "description": "Sosser is a community-focused financial cooperative offering innovative savings, loan, and insurance services tailored for local development. We're committed to digital transformation and inclusive banking, empowering individuals and communities across Ethiopia to achieve financial prosperity and resilience.",
+      "title": "About SOSER",
+      "description": "SOSER is a community-focused financial cooperative offering innovative savings, loan, and insurance services tailored for local development. We're committed to digital transformation and inclusive banking, empowering individuals and communities across Ethiopia to achieve financial prosperity and resilience.",
       "learn_more": "Learn More About Us"
     },
     "services": {
@@ -109,7 +109,7 @@
       "title": "Latest News",
       "items": [
         {
-          "title": "Sosser Achieves 50,000 Member Milestone",
+          "title": "soser Achieves 50,000 Member Milestone",
           "date": "2024-01-12",
           "author": "Communications Team",
           "excerpt": "We celebrate reaching 50,000 active members across Ethiopia, strengthening communities nationwide."
@@ -131,7 +131,7 @@
     },
     "cta": {
       "title": "Ready to Start Your Financial Journey?",
-      "description": "Join thousands of satisfied members who trust Sosser for their financial needs.",
+      "description": "Join thousands of satisfied members who trust soser for their financial needs.",
       "get_started": "Get Started Now"
     }
   },
@@ -180,8 +180,8 @@
     "contact": {
       "address": "Dangila, Amhara, Ethiopia",
       "phone": "+251-11-XXX-XXXX",
-      "email": "info@sosser.coop",
-      "website": "www.sosser.coop"
+      "email": "info@soser.coop",
+      "website": "www.soser.coop"
     },
     "links": {
       "about": {
@@ -220,7 +220,7 @@
       }
     },
     "bottom": {
-      "copyright": "© {{year}} Sosser Financial Cooperative. All rights reserved.",
+      "copyright": "© {{year}} soser Financial Cooperative. All rights reserved.",
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
       "support": "Support"

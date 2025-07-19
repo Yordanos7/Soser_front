@@ -307,30 +307,17 @@ const Loans = () => {
               This rate applies to all loan durations and purposes, providing
               you with predictable and transparent financing costs.
             </p>
+            <div className="mt-8">
+              <Link to="/loan-calculator">
+                <button className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200">
+                  Calculate Your Loan
+                </button>
+              </Link>
+            </div>
           </div>
         </motion.div>
 
         {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="bg-gradient-to-r from-blue-600 to-green-600 rounded-xl shadow-lg p-8 text-white text-center"
-        >
-          <h2 className="text-3xl font-bold mb-4">Ready to Apply?</h2>
-          <p className="text-xl mb-8">
-            Start your loan application today or use our calculator to estimate
-            your payments.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200">
-              <Link to="/loan-application">Apply Now</Link>
-            </button>
-            <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-200">
-              <Link to="/loan-calculator">Loan Calculator</Link>
-            </button>
-          </div>
-        </motion.div>
       </div>
     </div>
   );

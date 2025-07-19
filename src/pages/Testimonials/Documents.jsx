@@ -17,6 +17,7 @@ const Documents = () => {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [activeCategory, setActiveCategory] = useState("All Documents");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [viewingImage, setViewingImage] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,8 +92,42 @@ const Documents = () => {
     return downloads.toString();
   };
 
+  // Image viewing modal
+  const ImageModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+      <div className="relative w-full max-w-4xl">
+        <button
+          onClick={() => setViewingImage(null)}
+          className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 z-10"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+        <img
+          src={viewingImage}
+          alt="Document preview"
+          className="max-h-[80vh] max-w-full mx-auto object-contain"
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 pt-16 md:pt-20">
+      {viewingImage && <ImageModal />}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Header */}
         <motion.div
@@ -164,7 +199,7 @@ const Documents = () => {
             <button
               key={index}
               onClick={() => setActiveCategory(category.name)}
-              className={`px-3 md:px-6 py-1 md:py-2 rounded-full text-sm md:text-base font-medium transition-all duration-200 ${
+              className={`px-3 md:px-6 py-1 md:py-2 rounded-full text-sm md:text-base font-medium transition-all duration-200 whitespace-nowrap ${
                 activeCategory === category.name
                   ? "bg-blue-600 text-white shadow-lg"
                   : "bg-white text-gray-600 hover:bg-blue-50 hover:text-blue-600"
@@ -193,91 +228,107 @@ const Documents = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 + index * 0.1 }}
-                    className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-6 md:p-8 hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300"
+                    className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg overflow-hidden hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300 flex flex-col"
                   >
-                    <div className="flex items-center mb-3 md:mb-4">
-                      <div className="w-10 md:w-12 h-10 md:h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3 md:mr-4">
-                        <DocumentTextIcon className="w-5 md:w-6 h-5 md:h-6 text-blue-600" />
-                      </div>
-                      <div>
-                        <span className="bg-blue-100 text-blue-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium">
-                          {document.type}
-                        </span>
-                      </div>
-                    </div>
-
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3">
-                      {document.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6">
-                      {document.description}
-                    </p>
-
-                    <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
-                      <div>
-                        <p className="text-xs md:text-sm text-gray-500">
-                          File Size
-                        </p>
-                        <p className="font-medium text-gray-900 text-sm md:text-base">
-                          {document.size}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs md:text-sm text-gray-500">
-                          Pages
-                        </p>
-                        <p className="font-medium text-gray-900 text-sm md:text-base">
-                          {document.pages}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs md:text-sm text-gray-500">
-                          Published
-                        </p>
-                        <p className="font-medium text-gray-900 text-sm md:text-base">
-                          {formatDate(document.publishDate)}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs md:text-sm text-gray-500">
-                          Downloads
-                        </p>
-                        <p className="font-medium text-gray-900 text-sm md:text-base">
-                          {formatDownloads(document.downloads)}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-                      <button
-                        onClick={() =>
-                          handleDownload(document.id, document.title)
-                        }
-                        disabled={downloadingDocId === document.id}
-                        className="flex-1 bg-gradient-to-r from-blue-600 to-green-600 text-white py-2 md:py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center justify-center disabled:opacity-50 text-sm md:text-base"
+                    {/* Document Image */}
+                    {document.imageUrl && (
+                      <div
+                        className="relative h-48 md:h-56 w-full cursor-pointer overflow-hidden"
+                        onClick={() => setViewingImage(document.imageUrl)}
                       >
-                        {downloadingDocId === document.id ? (
-                          `Downloading... ${downloadProgress}%`
-                        ) : (
-                          <>
-                            <ArrowDownTrayIcon className="w-4 md:w-5 h-4 md:h-5 mr-1 md:mr-2" />
-                            Download
-                          </>
-                        )}
-                      </button>
-                      <button className="border-2 border-gray-300 text-gray-600 px-4 md:px-6 py-2 md:py-3 rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-200 flex items-center justify-center text-sm md:text-base">
-                        <EyeIcon className="w-4 md:w-5 h-4 md:h-5 mr-1 md:mr-2" />
-                        Preview
-                      </button>
-                    </div>
-                    {downloadingDocId === document.id && (
-                      <div className="w-full bg-gray-200 rounded-full h-2 md:h-2.5 mt-3 md:mt-4">
-                        <div
-                          className="bg-blue-600 h-2 md:h-2.5 rounded-full"
-                          style={{ width: `${downloadProgress}%` }}
-                        ></div>
+                        <img
+                          src={document.imageUrl}
+                          alt={document.title}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-4">
+                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                            {document.type}
+                          </span>
+                        </div>
                       </div>
                     )}
+
+                    <div className="p-6 flex-grow flex flex-col">
+                      <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 line-clamp-2">
+                        {document.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm md:text-base mb-4 md:mb-6 flex-grow line-clamp-3">
+                        {document.description}
+                      </p>
+
+                      <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-500">
+                            File Size
+                          </p>
+                          <p className="font-medium text-gray-900 text-sm md:text-base">
+                            {document.size}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-500">
+                            Pages
+                          </p>
+                          <p className="font-medium text-gray-900 text-sm md:text-base">
+                            {document.pages}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-500">
+                            Published
+                          </p>
+                          <p className="font-medium text-gray-900 text-sm md:text-base">
+                            {formatDate(document.publishDate)}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-500">
+                            Downloads
+                          </p>
+                          <p className="font-medium text-gray-900 text-sm md:text-base">
+                            {formatDownloads(document.downloads)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+                        <button
+                          onClick={() =>
+                            handleDownload(document.id, document.title)
+                          }
+                          disabled={downloadingDocId === document.id}
+                          className="flex-1 bg-gradient-to-r from-blue-600 to-green-600 text-white py-2 md:py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center justify-center disabled:opacity-50 text-sm md:text-base"
+                        >
+                          {downloadingDocId === document.id ? (
+                            `Downloading... ${downloadProgress}%`
+                          ) : (
+                            <>
+                              <ArrowDownTrayIcon className="w-4 md:w-5 h-4 md:h-5 mr-1 md:mr-2" />
+                              Download
+                            </>
+                          )}
+                        </button>
+                        <button
+                          className="border-2 border-gray-300 text-gray-600 px-4 md:px-6 py-2 md:py-3 rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-200 flex items-center justify-center text-sm md:text-base"
+                          onClick={() =>
+                            document.imageUrl &&
+                            setViewingImage(document.imageUrl)
+                          }
+                        >
+                          <EyeIcon className="w-4 md:w-5 h-4 md:h-5 mr-1 md:mr-2" />
+                          Preview
+                        </button>
+                      </div>
+                      {downloadingDocId === document.id && (
+                        <div className="w-full bg-gray-200 rounded-full h-2 md:h-2.5 mt-3 md:mt-4">
+                          <div
+                            className="bg-blue-600 h-2 md:h-2.5 rounded-full"
+                            style={{ width: `${downloadProgress}%` }}
+                          ></div>
+                        </div>
+                      )}
+                    </div>
                   </motion.div>
                 ))}
             </div>
@@ -299,75 +350,96 @@ const Documents = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + index * 0.05 }}
-                  className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300"
+                  className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300 overflow-hidden"
                 >
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div className="flex items-start md:items-center space-x-3 md:space-x-4 flex-1">
-                      <div className="w-10 md:w-12 h-10 md:h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <DocumentTextIcon className="w-5 md:w-6 h-5 md:h-6 text-blue-600" />
+                  <div className="flex flex-col md:flex-row">
+                    {/* Image thumbnail */}
+                    {document.imageUrl && (
+                      <div
+                        className="md:w-40 flex-shrink-0 cursor-pointer"
+                        onClick={() => setViewingImage(document.imageUrl)}
+                      >
+                        <img
+                          src={document.imageUrl}
+                          alt={document.title}
+                          className="w-full h-full max-h-40 md:max-h-full object-cover"
+                        />
                       </div>
-                      <div className="flex-1">
-                        <div className="flex flex-col md:flex-row md:items-center md:space-x-3 space-y-1 md:space-y-0 mb-1 md:mb-2">
-                          <h3 className="text-base md:text-lg font-bold text-gray-900">
-                            {document.title}
-                          </h3>
-                          <div className="flex items-center space-x-2">
-                            {document.featured && (
-                              <span className="text-yellow-500 text-sm">
-                                ⭐
+                    )}
+
+                    <div className="flex-1 p-4 md:p-6">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div className="flex items-start space-x-3 md:space-x-4 flex-1">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col md:flex-row md:items-center md:space-x-3 space-y-1 md:space-y-0 mb-1 md:mb-2">
+                              <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-2">
+                                {document.title}
+                              </h3>
+                              <div className="flex items-center space-x-2">
+                                {document.featured && (
+                                  <span className="text-yellow-500 text-sm">
+                                    ⭐
+                                  </span>
+                                )}
+                                <span className="bg-gray-100 text-gray-800 px-2 py-0.5 rounded text-xs md:text-sm whitespace-nowrap">
+                                  {document.type}
+                                </span>
+                              </div>
+                            </div>
+                            <p className="text-gray-600 text-xs md:text-sm mb-2 line-clamp-2">
+                              {document.description}
+                            </p>
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
+                              <span>{document.size}</span>
+                              <span>•</span>
+                              <span>{document.pages} pages</span>
+                              <span>•</span>
+                              <span>{formatDate(document.publishDate)}</span>
+                              <span>•</span>
+                              <span>
+                                {formatDownloads(document.downloads)} downloads
                               </span>
-                            )}
-                            <span className="bg-gray-100 text-gray-800 px-2 py-0.5 rounded text-xs md:text-sm">
-                              {document.type}
-                            </span>
+                            </div>
                           </div>
                         </div>
-                        <p className="text-gray-600 text-xs md:text-sm mb-2 line-clamp-2">
-                          {document.description}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
-                          <span>{document.size}</span>
-                          <span>•</span>
-                          <span>{document.pages} pages</span>
-                          <span>•</span>
-                          <span>{formatDate(document.publishDate)}</span>
-                          <span>•</span>
-                          <span>
-                            {formatDownloads(document.downloads)} downloads
-                          </span>
+                        <div className="flex space-x-2 justify-end">
+                          <button
+                            onClick={() =>
+                              handleDownload(document.id, document.title)
+                            }
+                            disabled={downloadingDocId === document.id}
+                            className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-3 md:px-6 py-1 md:py-2 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center disabled:opacity-50 text-xs md:text-sm whitespace-nowrap"
+                          >
+                            {downloadingDocId === document.id ? (
+                              `${downloadProgress}%`
+                            ) : (
+                              <>
+                                <ArrowDownTrayIcon className="w-3 md:w-4 h-3 md:h-4 mr-1 md:mr-2" />
+                                {isMobile ? "DL" : "Download"}
+                              </>
+                            )}
+                          </button>
+                          <button
+                            className="border-2 border-gray-300 text-gray-600 px-2 md:px-4 py-1 md:py-2 rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-xs md:text-sm"
+                            onClick={() =>
+                              document.imageUrl &&
+                              setViewingImage(document.imageUrl)
+                            }
+                          >
+                            <EyeIcon className="w-3 md:w-4 h-3 md:h-4" />
+                          </button>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex space-x-2 justify-end">
-                      <button
-                        onClick={() =>
-                          handleDownload(document.id, document.title)
-                        }
-                        disabled={downloadingDocId === document.id}
-                        className="bg-gradient-to-r from-blue-600 to-green-600 text-white px-3 md:px-6 py-1 md:py-2 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200 flex items-center disabled:opacity-50 text-xs md:text-sm"
-                      >
-                        {downloadingDocId === document.id ? (
-                          `${downloadProgress}%`
-                        ) : (
-                          <>
-                            <ArrowDownTrayIcon className="w-3 md:w-4 h-3 md:h-4 mr-1 md:mr-2" />
-                            {isMobile ? "DL" : "Download"}
-                          </>
-                        )}
-                      </button>
-                      <button className="border-2 border-gray-300 text-gray-600 px-2 md:px-4 py-1 md:py-2 rounded-lg hover:border-blue-600 hover:text-blue-600 transition-all duration-200 text-xs md:text-sm">
-                        <EyeIcon className="w-3 md:w-4 h-3 md:h-4" />
-                      </button>
+                      {downloadingDocId === document.id && (
+                        <div className="w-full bg-gray-200 rounded-full h-1.5 md:h-2.5 mt-3">
+                          <div
+                            className="bg-blue-600 h-1.5 md:h-2.5 rounded-full"
+                            style={{ width: `${downloadProgress}%` }}
+                          ></div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  {downloadingDocId === document.id && (
-                    <div className="w-full bg-gray-200 rounded-full h-1.5 md:h-2.5 mt-3">
-                      <div
-                        className="bg-blue-600 h-1.5 md:h-2.5 rounded-full"
-                        style={{ width: `${downloadProgress}%` }}
-                      ></div>
-                    </div>
-                  )}
                 </motion.div>
               ))
             ) : (
@@ -391,19 +463,10 @@ const Documents = () => {
             Stay Updated
           </h2>
           <p className="text-base md:text-xl mb-6 md:mb-8">
-            Subscribe to receive notifications when new reports and documents
-            are published.
+            Our Commpany is committed to give you the simplest way to access all
+            the information you need. This is a place where you can find all the
+            documents you need to know about our company.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-3 md:px-4 py-2 md:py-3 rounded-lg text-gray-900 text-sm md:text-base"
-            />
-            <button className="bg-white text-blue-600 px-4 md:px-8 py-2 md:py-3 rounded-lg font-medium md:font-semibold hover:bg-gray-100 transition-colors duration-200 text-sm md:text-base">
-              Subscribe
-            </button>
-          </div>
         </motion.div>
       </div>
     </div>

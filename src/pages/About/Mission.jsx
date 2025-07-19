@@ -97,7 +97,7 @@ const Mission = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl mx-auto bg-black bg-opacity-50 p-6 rounded-lg"
+            className="text-center max-w-4xl mx-auto bg-orange-400 bg-opacity-50 p-6 rounded-lg"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Our Mission & Vision

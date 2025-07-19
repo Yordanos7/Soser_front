@@ -153,7 +153,7 @@ const Navbar = () => {
                 className="w-7 h-7 lg:w-10 lg:h-10 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200 transform hover:scale-105"
               />
               <span className="text-sm lg:text-base font-bold text-gray-800 whitespace-nowrap">
-                <span className="block">Soser Saving & Credit</span>
+                <span className="block">SOSER Saving & Credit</span>
                 <span className="block">Cooperative Union LTD</span>
               </span>
             </Link>

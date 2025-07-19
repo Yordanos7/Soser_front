@@ -16,6 +16,10 @@ import Chart from "chart.js/auto";
 import { getAnnouncements } from "../api/announcement";
 import { getEvents } from "../api/event";
 import { useAuth } from "../context/AuthContext";
+import SoserChatAssistant from "./SoserChatAssistant";
+import Lottie from "lottie-react";
+import ai from "../locales/ai.json";
+import useCountUp from "../hooks/useCountUp";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -24,10 +28,10 @@ const Home = () => {
   const [typedText, setTypedText] = useState("");
   const [announcements, setAnnouncements] = useState([]);
   const [events, setEvents] = useState([]);
-  const [countersStarted, setCountersStarted] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const fullText = t("home.hero.title_typed");
 
-  const heroImages = ["./1.png", "./2.png", "./3.png", "./2.png"];
+  const heroImages = ["./1.png", "./2.png", "./3.png", "./6.png"];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -46,9 +50,9 @@ const Home = () => {
         setTimeout(() => {
           index = 0;
           setTypedText("");
-        }, 1000); // Pause before restarting
+        }, 1000);
       }
-    }, 150); // Typing speed
+    }, 150);
 
     return () => clearInterval(typingInterval);
   }, [fullText]);
@@ -109,6 +113,8 @@ const Home = () => {
 
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const savingTrendChartRef = useRef(null);
+  const savingTrendChartInstance = useRef(null);
 
   useEffect(() => {
     if (chartRef && chartRef.current) {
@@ -178,91 +184,243 @@ const Home = () => {
       });
     }
 
+    if (savingTrendChartRef && savingTrendChartRef.current) {
+      if (savingTrendChartInstance.current) {
+        savingTrendChartInstance.current.destroy();
+      }
+      const ctx = savingTrendChartRef.current.getContext("2d");
+      savingTrendChartInstance.current = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [
+            "2001",
+            "2002",
+            "2003",
+            "2004",
+            "2005",
+            "2006",
+            "2007",
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+          ],
+          datasets: [
+            {
+              label: "Regular",
+              data: [
+                1428035.0,
+                1723278.5,
+                1956222.76,
+                1837375.5,
+                1480620.46,
+                2369349.96,
+                2467389.21,
+                4122992.39,
+                16292324.91,
+                18160825.66,
+                16071531.38,
+                27232357.04,
+                3904195.46,
+                20129774.41,
+                16223739.3,
+                0, // Data for 2016 not available in image
+              ],
+              borderColor: "rgba(75, 192, 192, 1)",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              fill: true,
+              tension: 0.4,
+              borderWidth: 2,
+            },
+            {
+              label: "Voluntary",
+              data: [
+                762185.2,
+                1826285.79,
+                1588957.72,
+                2807267.76,
+                5136501.11,
+                8906416.95,
+                17476015.76,
+                30769740.91,
+                83919148.95,
+                89802390.02,
+                97285923.53,
+                187088312.55,
+                109357590.8,
+                298031700.81,
+                147646226.25,
+                0, // Data for 2016 not available in image
+              ],
+              borderColor: "rgba(255, 99, 132, 1)",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              fill: true,
+              tension: 0.4,
+              borderWidth: 2,
+            },
+            {
+              label: "Contractual",
+              data: [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                147500.0,
+                1070337.47,
+                44267587.88,
+                55875215.88,
+                194057962.0,
+                821206396.0,
+                577815246.0,
+                378677565.57,
+                232110490.9,
+                0, // Data for 2016 not available in image
+              ],
+              borderColor: "rgba(54, 162, 235, 1)",
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              fill: true,
+              tension: 0.4,
+              borderWidth: 2,
+            },
+            {
+              label: "Current",
+              data: [
+                5190540.04,
+                2425506.81,
+                1684087.64,
+                654306.24,
+                219123.55,
+                195557.87,
+                25507.5,
+                0,
+                10410229.63,
+                9516254.49,
+                10309275.7,
+                19825530.2,
+                0,
+                122213138.95,
+                29371427.43,
+                0, // Data for 2016 not available in image
+              ],
+              borderColor: "rgba(255, 206, 86, 1)",
+              backgroundColor: "rgba(255, 206, 86, 0.2)",
+              fill: true,
+              tension: 0.4,
+              borderWidth: 2,
+            },
+            {
+              label: "Total",
+              data: [
+                7380760.24,
+                5975071.1,
+                5229206.12,
+                5298958.5,
+                6836305.12,
+                11498324.78,
+                20116412.47,
+                35963070.77,
+                154888291.37,
+                173354686.05,
+                317724691.61,
+                1055352595.79,
+                691077032.26,
+                819052179.74,
+                425351883.88,
+                0, // Data for 2016 not available in image
+              ],
+              borderColor: "rgba(153, 102, 255, 1)",
+              backgroundColor: "rgba(153, 102, 255, 0.2)",
+              fill: true,
+              tension: 0.4,
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "top" },
+            tooltip: { mode: "index", intersect: false },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Savings Amount (ETB)",
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Years",
+              },
+            },
+          },
+        },
+      });
+    }
+
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
+      if (savingTrendChartInstance.current) {
+        savingTrendChartInstance.current.destroy();
+      }
     };
   }, [t]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !countersStarted) {
-            setCountersStarted(true);
-            startCounters();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
+  const [totalLoanRef, totalLoanCount] = useCountUp(1413361693.7);
+  const [shortTermLoanRef, shortTermLoanCount] = useCountUp(40661181.81);
+  const [mediumTermLoanRef, mediumTermLoanCount] = useCountUp(1372700511.89);
 
-    const section = document.querySelector("#loan-disbursement-section");
-    if (section) observer.observe(section);
-
-    return () => {
-      if (section) observer.unobserve(section);
-    };
-  }, [countersStarted]);
-
-  const startCounters = () => {
-    const counters = [
-      {
-        element: document.querySelector("#short-term-loan"),
-        target: 40661181.81,
-      },
-      {
-        element: document.querySelector("#medium-term-loan"),
-        target: 1372700511.89,
-      },
-      { element: document.querySelector("#total-loan"), target: 1413361693 },
-    ];
-
-    const duration = 2000; // Animation duration in ms
-    const frameDuration = 1000 / 60; // 60fps
-    const totalFrames = Math.round(duration / frameDuration);
-
-    counters.forEach((counter) => {
-      if (!counter.element) return;
-
-      let frame = 0;
-      const countTo = counter.target;
-      const counterText = counter.element;
-
-      const animate = () => {
-        frame++;
-        const progress = frame / totalFrames;
-        const currentCount = Math.round(countTo * progress);
-
-        if (frame <= totalFrames) {
-          counterText.textContent = formatNumber(currentCount);
-          requestAnimationFrame(animate);
-        } else {
-          counterText.textContent = formatNumber(countTo);
-        }
-      };
-
-      requestAnimationFrame(animate);
-    });
+  const formatNumber = (num, isAnimating) => {
+    if (isAnimating) {
+      if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(2) + "B";
+      }
+      if (num >= 1000000) {
+        return (num / 1000000).toFixed(2) + "M";
+      }
+      if (num >= 1000) {
+        return (num / 1000).toFixed(2) + "K";
+      }
+    }
+    return new Intl.NumberFormat("en-US").format(num.toFixed(2));
   };
 
-  const formatNumber = (num) => {
-    if (num >= 1000000000) {
-      return (num / 1000000000).toFixed(2) + "B";
-    }
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(2) + "M";
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(2) + "K";
-    }
-    return num.toString();
+  const toggleChat = () => {
+    setShowChat(!showChat);
   };
 
   return (
     <div className="pt-16 lg:pt-20">
-      {/* Hero Section */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 right-6 z-50 cursor-pointer"
+        onClick={toggleChat}
+      >
+        <Lottie
+          animationData={ai}
+          loop={true}
+          className="w-20 h-20 hover:shadow-lg rounded-full"
+        />
+      </motion.div>
+
+      {showChat && <SoserChatAssistant onClose={() => setShowChat(false)} />}
+
       <section className="relative h-screen overflow-hidden">
         <div className="absolute inset-0">
           <motion.div
@@ -275,7 +433,7 @@ const Home = () => {
           >
             <img
               src={heroImages[currentSlide]}
-              alt="Sosser Hero"
+              alt="soser Hero"
               className="w-full h-full object-cover"
             />
           </motion.div>
@@ -318,7 +476,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Slide Indicators */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {heroImages.map((_, index) => (
             <button
@@ -332,7 +489,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About Sosser Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -348,10 +504,10 @@ const Home = () => {
             <p className="text-lg text-gray-600 mb-4 leading-relaxed">
               {t("home.about.description")}
               The name SOSER Union is derived from the local name of Mount
-              Sosser, situated at the border between Dangila and Fagita Lekoma
+              soser, situated at the border between Dangila and Fagita Lekoma
               woredas. The office of the union is located in Dangla town
               administration, 80 km from Bahir Dar, the Amhara National Regional
-              State capital, and 491 km from Addis Ababa. Sosser Saving & Credit
+              State capital, and 491 km from Addis Ababa. soser Saving & Credit
               Cooperative Societies Union LTD was established on March 24, 2008
               (GC) and certified by the ANRS Cooperative Agency under code
               02/1729 on June 19, 2008 (GC). It was founded by 23 primary
@@ -375,7 +531,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Services Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -437,7 +592,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Loan Disbursement Section */}
       <section id="loan-disbursement-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -455,14 +609,15 @@ const Home = () => {
             </p>
           </motion.div>
 
-          {/* Large Loan Disbursement Numbers */}
           <div className="flex flex-col items-center justify-center mb-16">
             <div className="text-center mb-8">
               <h3 className="text-xl font-semibold text-gray-700 mb-4">
                 Total Loan Disbursement
               </h3>
               <div className="text-5xl md:text-7xl font-bold text-blue-600">
-                <span id="total-loan">0</span>
+                <span ref={totalLoanRef}>
+                  {formatNumber(totalLoanCount, false)}
+                </span>
               </div>
               <p className="text-gray-500 mt-2">ETB</p>
             </div>
@@ -473,7 +628,9 @@ const Home = () => {
                   Short Term Loan
                 </h4>
                 <div className="text-3xl font-bold text-green-600">
-                  <span id="short-term-loan">0</span>
+                  <span ref={shortTermLoanRef}>
+                    {formatNumber(shortTermLoanCount, false)}
+                  </span>
                 </div>
                 <p className="text-gray-500">ETB</p>
               </div>
@@ -483,14 +640,49 @@ const Home = () => {
                   Medium Term Loan
                 </h4>
                 <div className="text-3xl font-bold text-purple-600">
-                  <span id="medium-term-loan">0</span>
+                  <span ref={mediumTermLoanRef}>
+                    {formatNumber(mediumTermLoanCount, false)}
+                  </span>
                 </div>
                 <p className="text-gray-500">ETB</p>
               </div>
             </div>
           </div>
 
-          {/* Sosser Office Building Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-16"
+          >
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+              {t("home.growth_insights.title")}
+            </h3>
+            <div className="bg-white p-4 rounded-xl shadow-lg">
+              <div className="h-96">
+                <canvas ref={chartRef}></canvas>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-16"
+          >
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+              Saving trend 2001 up to June 23, 2017 EC
+            </h3>
+            <div className="bg-white p-4 rounded-xl shadow-lg">
+              <div className="h-96">
+                <canvas ref={savingTrendChartRef}></canvas>
+              </div>
+            </div>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -501,7 +693,7 @@ const Home = () => {
             <div className="overflow-hidden shadow-xl">
               <img
                 src="/2.png"
-                alt="Sosser Main Office Building"
+                alt="soser Main Office Building"
                 className="w-full h-auto object-cover"
               />
             </div>
@@ -531,11 +723,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Announcements & Events Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Announcements */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -581,7 +771,6 @@ const Home = () => {
               </div>
             </motion.div>
 
-            {/* Events */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -628,7 +817,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div

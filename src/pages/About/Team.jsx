@@ -7,7 +7,7 @@ const Team = () => {
       id: 1,
       name: "Mr. Aschalew Mohamed Aliyu",
       position: "G/Manager",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
+      image: "/m.jpg",
       quote:
         "Leading Sosser towards excellence in cooperative banking services.",
       experience: "15+ years in banking leadership",
@@ -60,7 +60,7 @@ const Team = () => {
   const branchOffices = [
     {
       id: 1,
-      name: "Jawi Branch ",
+      name: "Jawi Branch",
       leader: "Getaneh Asabu",
       staff: 12,
       image: "https://source.unsplash.com/random/300x200/?bank,building",
@@ -101,23 +101,23 @@ const Team = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
             Our Organizational Structure
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Meet the dedicated team that drives Sosser's mission to empower
             communities through innovative financial services across Ethiopia.
           </p>
         </motion.div>
 
         {/* Leadership Team */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-center">
             Executive Leadership
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
             {leadershipTeam.map((member, index) => (
               <motion.div
                 key={member.id}
@@ -126,28 +126,30 @@ const Team = () => {
                 transition={{ delay: index * 0.1 }}
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="p-8">
-                  <div className="flex items-center space-x-6">
+                <div className="p-4 sm:p-6 md:p-8">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 md:space-x-6">
                     <div className="flex-shrink-0">
                       <img
                         src={member.image}
                         alt={member.name}
-                        className="w-48 h-48 rounded-lg object-cover"
+                        className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-lg object-cover"
                       />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    <div className="flex-1 text-center sm:text-left">
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">
                         {member.name}
                       </h3>
-                      <p className="text-blue-600 font-semibold text-lg mb-2">
+                      <p className="text-blue-600 font-semibold text-base sm:text-lg mb-1 sm:mb-2">
                         {member.position}
                       </p>
-                      <p className="text-gray-500">{member.experience}</p>
+                      <p className="text-sm sm:text-base text-gray-500">
+                        {member.experience}
+                      </p>
+                      <blockquote className="mt-3 sm:mt-4 text-gray-700 italic text-sm sm:text-base md:text-lg">
+                        "{member.quote}"
+                      </blockquote>
                     </div>
                   </div>
-                  <blockquote className="mt-6 text-gray-700 italic text-lg">
-                    "{member.quote}"
-                  </blockquote>
                 </div>
               </motion.div>
             ))}
@@ -155,11 +157,11 @@ const Team = () => {
         </div>
 
         {/* Division Heads */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-center">
             Division Leadership
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 md:mb-12">
             {divisionHeads.map((member, index) => (
               <motion.div
                 key={member.id}
@@ -168,24 +170,24 @@ const Team = () => {
                 transition={{ delay: index * 0.1 }}
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   <div className="flex flex-col items-center">
                     <img
                       src={member.image}
                       alt={member.name}
-                      className="w-40 h-40 rounded-lg object-cover mb-4"
+                      className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-lg object-cover mb-3 sm:mb-4"
                     />
                     <div className="text-center">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1 sm:mb-2">
                         {member.name}
                       </h3>
-                      <p className="text-blue-600 font-semibold mb-2">
+                      <p className="text-blue-600 font-semibold text-sm sm:text-base mb-1 sm:mb-2">
                         {member.position}
                       </p>
-                      <p className="text-sm text-gray-500 mb-3">
+                      <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">
                         {member.experience}
                       </p>
-                      <blockquote className="text-gray-700 italic text-sm">
+                      <blockquote className="text-gray-700 italic text-xs sm:text-sm">
                         "{member.quote}"
                       </blockquote>
                     </div>
@@ -197,12 +199,12 @@ const Team = () => {
         </div>
 
         {/* Branch Offices */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-center">
             Our Branch Network
           </h2>
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 md:mb-8">
               {branchOffices.map((branch) => (
                 <motion.div
                   key={branch.id}
@@ -212,27 +214,29 @@ const Team = () => {
                   <img
                     src={branch.image}
                     alt={branch.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-32 sm:h-40 md:h-48 object-cover"
                   />
-                  <div className="p-4">
-                    <h3 className="font-bold text-blue-800 text-lg">
+                  <div className="p-3 sm:p-4">
+                    <h3 className="font-bold text-blue-800 text-base sm:text-lg">
                       {branch.name}
                     </h3>
-                    <h3 className="font-bold text-black text-lg">
+                    <h3 className="font-bold text-black text-sm sm:text-base">
                       Branch Manager Mr. {branch.leader}
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm sm:text-base">
                       {branch.staff} staff members
                     </p>
                   </div>
                 </motion.div>
               ))}
             </div>
-            <div className="text-center"></div>
+            <div className="text-center">
+              <p className="text-gray-700 text-sm sm:text-base">
+                Total staff across all branches: {totalStaff}
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* Values Section */}
       </div>
     </div>
   );

@@ -95,8 +95,12 @@ const Login = () => {
             className="bg-white rounded-2xl shadow-xl p-8"
           >
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white font-bold text-2xl">S</span>
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <img
+                  src="/favicon.ico"
+                  alt="Sosser Logo"
+                  className="w-10 h-10 lg:w-12 lg:h-12 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-200 transform hover:scale-105"
+                />
               </div>
               <h2 className="text-3xl font-bold text-gray-800 mb-2">
                 Welcome Back
@@ -105,27 +109,6 @@ const Login = () => {
             </div>
 
             {/* Quick Login Buttons for Testing */}
-            <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600 mb-3">
-                Quick Login (for testing):
-              </p>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleQuickLogin("admin")}
-                  className="flex-1 bg-red-500 text-white py-2 px-3 rounded text-sm hover:bg-red-600 disabled:opacity-50"
-                  disabled={isLoading}
-                >
-                  Admin Login
-                </button>
-                <button
-                  onClick={() => handleQuickLogin("user")}
-                  className="flex-1 bg-blue-500 text-white py-2 px-3 rounded text-sm hover:bg-blue-600 disabled:opacity-50"
-                  disabled={isLoading}
-                >
-                  User Login
-                </button>
-              </div>
-            </div>
 
             {error && (
               <motion.div
