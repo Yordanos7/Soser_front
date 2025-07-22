@@ -37,7 +37,8 @@
       "offices": "ቢሮዎች"
     },
     "payment": "ክፍያ",
-    "get_started": "ጀምር"
+    "get_started": "ጀምር",
+    "login": "ግባ"
   },
   "home": {
     "hero": {
@@ -174,7 +175,8 @@
       "offices": "ቢሮዎች"
     },
     "payment": "ክፍያ",
-    "get_started": "ጀምር"
+    "get_started": "ጀምር",
+    "login": "ግባ"
   },
   "footer": {
     "description": "በኢትዮጵያ ውስጥ ማህበረሰቦችን በፈጠራ የፋይናንስ አገልግሎቶች ማብቃት። ለቁጠባ፣ ብድር፣ ኢንሹራንስ እና ዲጂታል ባንኪንግ የታመነ አጋርዎ።",
@@ -205,7 +207,6 @@
       "resources": {
         "title": "መርጃዎች",
         "items": [
-          { "name": "ተደጋጋሚ ጥያቄዎች", "path": "/contact/faq" },
           { "name": "ሰነዶች", "path": "/testimonials/documents" },
           { "name": "የስኬት ታሪኮች", "path": "/testimonials/success" },
           { "name": "ጋለሪ", "path": "/media/gallery" }

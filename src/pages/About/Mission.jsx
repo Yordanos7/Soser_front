@@ -136,27 +136,7 @@ const Mission = () => {
                 that members can manage independently and that are not overly
                 complicated to access.
               </p>
-              <ul className="space-y-3">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <span className="text-gray-600">
-                    Provide accessible financial services to underserved
-                    communities
-                  </span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <span className="text-gray-600">
-                    Foster economic empowerment through education and resources
-                  </span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                  <span className="text-gray-600">
-                    Build sustainable communities through cooperative banking
-                  </span>
-                </li>
-              </ul>
+              <ul className="space-y-3"></ul>
             </motion.div>
 
             {/* Vision */}
@@ -177,26 +157,6 @@ const Mission = () => {
                 Becoming a leading cooperative bank that is continuously
                 accessible, preferred, and popular.
               </p>
-              <ul className="space-y-3">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <span className="text-gray-600">
-                    Leading digital financial cooperative in Ethiopia
-                  </span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <span className="text-gray-600">
-                    Becoming accessible to quality financial services
-                  </span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                  <span className="text-gray-600">
-                    Sustainable community prosperity and resilience
-                  </span>
-                </li>
-              </ul>
             </motion.div>
           </div>
         </div>
@@ -247,7 +207,7 @@ const Mission = () => {
       </section>
 
       {/* Strategic Goals */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -300,7 +260,7 @@ const Mission = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-blue-600 to-green-600">

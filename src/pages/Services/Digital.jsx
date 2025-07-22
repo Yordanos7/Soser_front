@@ -158,19 +158,28 @@ const Digital = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
+        {/* Header with Background Image */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-16 relative overflow-hidden rounded-xl h-96"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Digital Banking Services
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Experience the future of banking with our comprehensive digital
-            solutions designed for modern Ethiopian lifestyles.
-          </p>
+          <div
+            className="absolute inset-0 bg-[url('https://www.nelito.com/images/blog-images/what-is-digital-banking-its-benefits-and-future-banner.jpg')] bg-cover bg-center"
+            style={{
+              filter: "brightness(0.8)",
+              zIndex: 0,
+            }}
+          />
+          <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Digital Banking Services
+            </h1>
+            <p className="text-xl text-white max-w-3xl mx-auto">
+              Experience the future of banking with our comprehensive digital
+              solutions designed for modern Ethiopian lifestyles.
+            </p>
+          </div>
         </motion.div>
 
         {/* Digital Services */}
@@ -292,8 +301,6 @@ const Digital = () => {
             ))}
           </div>
         </motion.div>
-
-        {/* App Download CTA */}
       </div>
     </div>
   );

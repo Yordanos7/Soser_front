@@ -15,10 +15,8 @@ const Savings = () => {
     {
       name: "Compulsory saving",
       icon: BanknotesIcon,
-      interestRate: "7%",
       features: [
         "A mandatory saving type",
-        "bearing 7% daily accrued interest with no Tax",
         "Free online banking",
         "which can not withdrawn with out due purpose and members decision",
       ],
@@ -27,9 +25,7 @@ const Savings = () => {
     {
       name: "Voluntary Saving",
       icon: ChartBarIcon,
-      interestRate: " 7%",
       features: [
-        "Saving type bearing 7% interest per annum daily accrued",
         "no tax which members can easily save and withdraw like most banks saving today",
       ],
       gradient: "from-green-500 to-green-600",
@@ -37,9 +33,7 @@ const Savings = () => {
     {
       name: "Contractual Saving",
       icon: UserGroupIcon,
-      interestRate: "10%",
       features: [
-        "The interest rate this saving reaches 10% per annum.",
         "Contractual saving those saving based on agreement based on savers and the union certain terms and condition",
       ],
       gradient: "from-green-700 to-green-800",
@@ -47,7 +41,6 @@ const Savings = () => {
     {
       name: "current account",
       icon: UserGroupIcon,
-      interestRate: "0%",
       features: [
         "current account saving non interest bearing saving and very easy to withdraw.",
       ],
@@ -56,9 +49,7 @@ const Savings = () => {
     {
       name: "Children saving",
       icon: UserGroupIcon,
-      interestRate: "10%",
       features: [
-        "The interest rate reaches 10% per annum to promote child saving",
         "Children Saving a saving Type with similar conditions, but loos, like contractual savings",
       ],
       gradient: "from-green-700 to-green-800",
@@ -66,9 +57,7 @@ const Savings = () => {
     {
       name: "Special Savings",
       icon: UserGroupIcon,
-      interestRate: "11%",
       features: [
-        "The interest rate of this saving reaches 11% per annum.",
         "Financial literacy ",
         "Low minimum balance",
         "Educational resources",
@@ -170,20 +159,7 @@ const Savings = () => {
                 >
                   <account.icon className="w-12 h-12 mb-4" />
                   <h3 className="text-2xl font-bold mb-2">{account.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-3xl font-bold">
-                        {account.interestRate}
-                      </p>
-                      <p className="text-sm opacity-90">Annual Interest</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-semibold">
-                        {account.minBalance || "N/A"}
-                      </p>
-                      <p className="text-sm opacity-90">Min. Balance</p>
-                    </div>
-                  </div>
+                  <div className="flex items-center justify-between"></div>
                 </div>
 
                 <div className="p-6">
@@ -212,8 +188,16 @@ const Savings = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white relative">
+        <div className="absolute inset-0">
+          <img
+            src="https://trustlinkfinancial.com/wp-content/uploads/2023/09/savings.jpg"
+            alt="Benefits of Sosser Savings"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -221,28 +205,36 @@ const Savings = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               Why Choose Sosser Savings?
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
             {benefits.map((benefit, index) => (
               <motion.div
                 key={benefit.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+                }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.2,
+                  hover: { duration: 0.3 },
+                }}
                 viewport={{ once: true }}
-                className="text-center"
+                className="text-center bg-white bg-opacity-90 rounded-lg p-6"
               >
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                   <benefit.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                <h3 className="text-xl font-bold text-black mb-4">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-black leading-relaxed">
                   {benefit.description}
                 </p>
               </motion.div>

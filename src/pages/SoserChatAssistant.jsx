@@ -36,8 +36,6 @@ If someone says "thank you", reply "You're welcome! Let us know if you need anyt
 If the question is unrelated (e.g., weather), politely say: "I only answer questions about Soser."
 `;
 
-const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
-
 export default function SoserChatAssistant({ onClose }) {
   const [input, setInput] = useState("");
   const [chat, setChat] = useState([]);
@@ -57,21 +55,11 @@ export default function SoserChatAssistant({ onClose }) {
     setChat(newChat);
 
     try {
-      const response = await axios.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        {
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "system", content: systemPrompt }, ...newChat],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${API_KEY}`,
-          },
-        }
-      );
+      const response = await axios.post("/api/chat", {
+        chat: newChat,
+      });
 
-      const aiMessage = response.data.choices[0].message.content;
+      const aiMessage = response.data.message;
       setChat([...newChat, { role: "assistant", content: aiMessage }]);
     } catch (err) {
       console.error(err);

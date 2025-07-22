@@ -84,18 +84,27 @@ const Insurance = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
+        {/* Header with Background Image */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-16 relative overflow-hidden rounded-xl h-96"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Insurance Services
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Financial protection solutions designed for families and borrowers
-          </p>
+          <div
+            className="absolute inset-0 bg-[url('https://ibanding.com.my/wp-content/uploads/2017/04/Depositphotos_83794884_l-2015-min.jpg')] bg-cover bg-center"
+            style={{
+              filter: "brightness(0.7)",
+              zIndex: 0,
+            }}
+          />
+          <div className="relative z-10 py-16 px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Insurance Services
+            </h1>
+            <p className="text-xl text-white max-w-3xl mx-auto">
+              Financial protection solutions designed for families and borrowers
+            </p>
+          </div>
         </motion.div>
 
         {/* Insurance Definition */}

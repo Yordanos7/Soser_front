@@ -32,7 +32,6 @@ const Payment = () => {
       steps: [
         "Open TeleBirr app on your mobile device",
         'Select "Send Money" or "Transfer"',
-        "Enter Sosser account: *847*12345#",
         "Enter the amount you want to pay",
         "Complete the transaction with your PIN",
         "Take a screenshot of the confirmation",
@@ -48,7 +47,7 @@ const Payment = () => {
         "Login with your credentials",
         'Select "Transfer" from the menu',
         'Choose "To Other Banks"',
-        "Enter Sosser account details provided",
+        "Enter Soser account details provided",
         "Enter amount and confirm transaction",
         "Save transaction receipt",
       ],

@@ -1,139 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 const Partners = () => {
   const partners = [
     {
       id: 1,
-      name: "Commercial Bank of Ethiopia",
-      category: "Banking Partner",
-      description:
-        "Strategic partnership for international transactions and foreign exchange services.",
-      logo: "https://play-lh.googleusercontent.com/kKGUk63iUIMXF-SL4AklHhZnQesw3-jZT2MR6NuX-xS54ncaZJ-8tlJETZdQYyZ5-g",
-      website: "https://combanketh.et",
+      name: "Admas multipurpose cooperatives union",
+      category: "Union",
+      logo: "/p4.png",
     },
     {
       id: 2,
-      name: "Development Bank of Ethiopia",
-      category: "Banking Partner",
-      description:
-        "Collaboration for development projects and long-term financing.",
-      logo: "https://upload.wikimedia.org/wikipedia/en/f/f9/Development_Bank_of_Ethiopia.png",
-      website: "https://dbe.com.et/",
+      name: "Wura saving and credit cooperatives union Ltd.",
+      category: "Union",
+      logo: "/p3.png",
     },
     {
       id: 3,
-      name: "Awash Bank",
-      category: "Banking Partner",
-      description:
-        "Supporting rural development and financial inclusion initiatives.",
-      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm0uJyPvAfa1gbBjZhdcOz8qadnSOcvBAXAQ&s",
-      website: "https://awashbank.com/",
+      name: "Development Bank of Ethiopia",
+      category: "Union",
+      logo: "https://upload.wikimedia.org/wikipedia/en/f/f9/Development_Bank_of_Ethiopia.png",
     },
     {
       id: 4,
-      name: "Hibret Bank",
-      category: "Financial Partner",
-      description:
-        "Funding support for microfinance and agricultural lending programs.",
-      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS15byYSwk8yXw7M6X_qDVs0l5cbxBrUOD4Yw&s",
-      website: "https://www.hibretbank.com.et/",
+      name: "Cord aid Ethiopia",
+      category: "NGOs",
+      logo: "/p2.png",
     },
     {
       id: 5,
-      name: "Abay Bank",
-      category: "Banking Partner",
-      description: "Commercial banking services and financial solutions.",
-      logo: "https://i.ytimg.com/vi/8MO-eKkD48k/sddefault.jpg",
-      website: "https://www.abaybanksc.com/",
+      name: "FINISH Mondial",
+      category: "NGOs",
+      logo: "/p1.png",
     },
     {
       id: 6,
-      name: "Cooperative Bank of Oromia",
-      category: "Banking Partner",
-      description: "Financial services for cooperatives and SMEs.",
-      logo: "https://coopbankoromia.com.et/wp-content/uploads/2021/12/Cooperative_Bank_of_Oromia.png",
-      website: "https://coopbankoromia.com.et/",
-    },
-    {
-      id: 7,
-      name: "Tele communication",
-      category: "Banking Partner",
-      description: "Financial services for cooperatives and SMEs.",
-      logo: "https://ethiopianembassy.be/wp-content/uploads/EthioTelecom-_-Ethiopia.jpg",
-      website: "https://coopbankoromia.com.et/",
-    },
-    {
-      id: 8,
-      name: "Ethiopian ministry of finance",
-      category: "Banking Partner",
-      description: "Financial services for cooperatives and SMEs.",
-      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQefUSsl4FBLp7yU3bohW2XiYJ9LoT8AnYGPw&s",
-      website: "https://coopbankoromia.com.et/",
-    },
-    {
-      id: 9,
-      name: "Municipality and mayor office",
-      category: "Banking Partner",
-      description: "Financial services for cooperatives and SMEs.",
-      logo: "/office.png",
-      website: "https://coopbankoromia.com.et/",
-    },
-    {
-      id: 10,
-      name: "ATA Ngo ,CORDI,HELBETASE,",
-      category: "Banking Partner",
-      description: "Financial services for cooperatives and SMEs.",
-      logo: "https://ane-ethiopia.org/Assets/images/Background/Partner%20Logo.jpg",
-      website: "https://coopbankoromia.com.et/",
-    },
-    {
-      id: 11,
-      name: "Admas multi purpose cooperative union ltd",
-      category: "Banking Partner",
-      description: "Financial services for cooperatives and SMEs.",
-      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL-f7BWg8p4F63jRxCJ3jbDDOv135Ld3jlrL47YeDiqMJZVlcQt9EG9sfmeSNn6wqdfBw&usqp=CAU",
-      website: "https://coopbankoromia.com.et/",
-    },
-    {
-      id: 12,
       name: "KOKEB SACCOOP UNION LTD",
-      category: "Banking Partner",
+      category: "Union",
       description: "Financial services for cooperatives and SMEs.",
       logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvpsq0a0ATvQkbR8rjBDXam4wGY8PNDkDNOQ&s",
       website: "https://coopbankoromia.com.et/",
     },
   ];
-
-  const partnerCategories = [
-    {
-      name: "All Partners",
-      value: "all",
-      count: partners.length,
-      color: "bg-gray-100 text-gray-800",
-    },
-    {
-      name: "Banking Partners",
-      value: "Banking Partner",
-      count: partners.filter((p) => p.category === "Banking Partner").length,
-      color: "bg-blue-100 text-blue-800",
-    },
-    {
-      name: "Financial Partners",
-      value: "Financial Partner",
-      count: partners.filter((p) => p.category === "Financial Partner").length,
-      color: "bg-green-100 text-green-800",
-    },
-  ];
-
-  const [selectedCategory, setSelectedCategory] = useState("all");
-
-  const filteredPartners =
-    selectedCategory === "all"
-      ? partners
-      : partners.filter((partner) =>
-          partner.category.includes(selectedCategory)
-        );
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
@@ -149,32 +57,13 @@ const Partners = () => {
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             We collaborate with leading organizations to expand our reach and
-            enhance our services for the Ethiopian community.
+            enhance our services for members.
           </p>
-
-          {/* Partner Categories */}
-          <div className="flex flex-wrap justify-center gap-4">
-            {partnerCategories.map((category, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedCategory(category.value)}
-                className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  category.color
-                } ${
-                  selectedCategory === category.value
-                    ? "ring-2 ring-offset-2 ring-blue-500"
-                    : ""
-                }`}
-              >
-                {category.name} ({category.count})
-              </button>
-            ))}
-          </div>
         </motion.div>
 
         {/* Partners Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {filteredPartners.map((partner, index) => (
+          {partners.map((partner, index) => (
             <motion.div
               key={partner.id}
               initial={{ opacity: 0, y: 20 }}
@@ -211,26 +100,15 @@ const Partners = () => {
                 </h3>
                 <span
                   className={`inline-block px-3 py-1 rounded-full text-sm mb-4 ${
-                    partner.category === "Banking Partner"
+                    partner.category === "Union"
                       ? "bg-blue-100 text-blue-800"
-                      : partner.category === "Financial Partner"
+                      : partner.category === "NGOs"
                       ? "bg-green-100 text-green-800"
                       : "bg-gray-100 text-gray-800"
                   }`}
                 >
                   {partner.category}
                 </span>
-                <p className="text-gray-600 mb-6">
-                  {partner.description || "No description available"}
-                </p>
-                <a
-                  href={partner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  Visit Website →
-                </a>
               </div>
             </motion.div>
           ))}
@@ -293,8 +171,6 @@ const Partners = () => {
             </div>
           </div>
         </motion.div>
-
-        {/* CTA Section */}
       </div>
     </div>
   );

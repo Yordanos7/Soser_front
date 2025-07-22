@@ -7,6 +7,7 @@ import {
   EnvelopeIcon,
   GlobeAltIcon,
 } from "@heroicons/react/24/outline";
+import { FaTelegramPlane, FaFacebookF } from "react-icons/fa";
 
 const Footer = () => {
   const { t, i18n } = useTranslation();
@@ -46,11 +47,45 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3 text-gray-400">
                 <EnvelopeIcon className="w-5 h-5 flex-shrink-0" />
-                <span>POBOX 02</span>
+                <a
+                  href="mailto:info@example.com"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  info@example.com
+                </a>
               </div>
               <div className="flex items-center space-x-3 text-gray-400">
                 <GlobeAltIcon className="w-5 h-5 flex-shrink-0" />
-                <span>{t("footer.contact.website")}</span>
+                <a
+                  href="https://www.example.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  {t("footer.contact.website")}
+                </a>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-400">
+                <FaTelegramPlane className="w-5 h-5 flex-shrink-0" />
+                <a
+                  href="https://t.me/sosercoop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  Telegram
+                </a>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-400">
+                <FaFacebookF className="w-5 h-5 flex-shrink-0" />
+                <a
+                  href="https://web.facebook.com/people/Soser-Soser/pfbid02GijnHPcMtP8jJqDcczuaFTueDmiqDtgWThBWfQUA2NdLB5qRnRanXcE9ncFdcBEil/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors duration-200"
+                >
+                  Facebook
+                </a>
               </div>
             </div>
           </div>
@@ -85,22 +120,16 @@ const Footer = () => {
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link
-                to="/privacy"
+                to="/"
                 className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
               >
                 {t("footer.bottom.privacy")}
               </Link>
               <Link
-                to="/terms"
+                to="/"
                 className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
               >
                 {t("footer.bottom.terms")}
-              </Link>
-              <Link
-                to="/contact/faq"
-                className="text-gray-400 hover:text-white text-sm transition-colors duration-200"
-              >
-                {t("footer.bottom.support")}
               </Link>
             </div>
           </div>

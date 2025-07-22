@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoanCalculator from "./pages/LoanCalculator";
+import Staff from "./pages/About/Staff";
 
 // Pages
 import Home from "./pages/Home";
@@ -38,7 +39,6 @@ import Gallery from "./pages/Media/Gallery";
 import Videos from "./pages/Media/Videos";
 
 // Contact
-import FAQ from "./pages/Contact/FAQ";
 import Offices from "./pages/Contact/Offices";
 
 // Admin
@@ -72,6 +72,7 @@ function App() {
                 <Route path="/about/team" element={<Team />} />
                 <Route path="/about/mission" element={<Mission />} />
                 <Route path="/about/partners" element={<Partners />} />
+                <Route path="/all-staff" element={<Staff />} />
 
                 {/* Services Routes */}
                 <Route path="/services/savings" element={<Savings />} />
@@ -93,7 +94,6 @@ function App() {
                 <Route path="/media/videos" element={<Videos />} />
 
                 {/* Contact Routes */}
-                <Route path="/contact/faq" element={<FAQ />} />
                 <Route path="/contact/offices" element={<Offices />} />
                 <Route path="/loan-calculator" element={<LoanCalculator />} />
 

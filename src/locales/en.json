@@ -37,19 +37,20 @@
       "offices": "Offices"
     },
     "payment": "Payment",
-    "get_started": "Get Started"
+    "get_started": "Get Started",
+    "login": "Login"
   },
   "home": {
     "hero": {
-      "title_part1": "Empowering Communities,",
-      "title_typed": "Grow with SOSER",
-      "description": "Welcome to soser – Your trusted financial partner for savings, loans, insurance, and digital banking solutions.",
+      "title_part1": "Empowering Members,",
+      "title_typed": "Grow with Soser",
+      "description": "Welcome to Soser Saving & CreditCooperative Union LTD  Your trusted financial partner for savings, loans, insurance, and digital banking solutions.",
       "get_started": "Get Started Today",
       "learn_more": "Learn More"
     },
     "about": {
       "title": "About SOSER",
-      "description": "SOSER is a community-focused financial cooperative offering innovative savings, loan, and insurance services tailored for local development. We're committed to digital transformation and inclusive banking, empowering individuals and communities across Ethiopia to achieve financial prosperity and resilience.",
+      "description": "SOSER is a membership-focused financial cooperative offering innovative savings, loan, and insurance services tailored for local development. We're committed to digital transformation and inclusive banking, empowering members across Amhara Region  to achieve financial prosperity and resilience.",
       "learn_more": "Learn More About Us"
     },
     "services": {
@@ -173,10 +174,11 @@
       "offices": "Offices"
     },
     "payment": "Payment",
-    "get_started": "Get Started"
+    "get_started": "Get Started",
+    "login": "Login"
   },
   "footer": {
-    "description": "Empowering communities across Ethiopia through innovative financial services. Your trusted partner for savings, loans, insurance, and digital banking.",
+    "description": "Empowering members across Ethiopia through innovative financial services. Your trusted partner for savings, loans, insurance, and digital banking.",
     "contact": {
       "address": "Dangila, Amhara, Ethiopia",
       "phone": "+251-11-XXX-XXXX",
@@ -204,7 +206,6 @@
       "resources": {
         "title": "Resources",
         "items": [
-          { "name": "FAQ", "path": "/contact/faq" },
           { "name": "Documents", "path": "/testimonials/documents" },
           { "name": "Success Stories", "path": "/testimonials/success" },
           { "name": "Gallery", "path": "/media/gallery" }

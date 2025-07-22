@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import CommentForm from "../../components/CommentForm";
 
-const Office = () => {
+const Offices = () => {
   const [selectedOffice, setSelectedOffice] = useState(null);
 
   const offices = [
@@ -26,13 +26,7 @@ const Office = () => {
         weekdays: "8:00 AM - 5:00 PM",
         sunday: "Closed",
       },
-      services: [
-        "All Banking Services",
-        "Loan Processing",
-        "Insurance",
-        "Digital Banking Support",
-        "Customer Service",
-      ],
+
       manager: "Mr. Aschalew Mohamed Aliyu",
       staff: 45,
       established: "2002",
@@ -54,11 +48,7 @@ const Office = () => {
         weekdays: "8:30 AM - 5:30 PM",
         sunday: "Closed",
       },
-      services: [
-        "All Banking Services",
-        "Loan Processing",
-        "Digital Banking Support",
-      ],
+
       manager: "Mrs. Selamawit Abebe",
       staff: 28,
       established: "2010",
@@ -78,7 +68,7 @@ const Office = () => {
         weekdays: "8:00 AM - 5:00 PM",
         sunday: "Closed",
       },
-      services: ["All Banking Services", "Saving Accounts", "Mobile Banking"],
+
       manager: "Mr. Getachew Mekonnen",
       staff: 22,
       established: "2015",
@@ -99,7 +89,7 @@ const Office = () => {
         weekdays: "8:00 AM - 5:00 PM",
         sunday: "Closed",
       },
-      services: ["Basic Banking Services", "Saving Accounts", "Mobile Banking"],
+
       manager: "Mrs. Tigist Worku",
       staff: 18,
       established: "2018",
@@ -133,30 +123,11 @@ const Office = () => {
             Our Offices
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Find a Sosser office near you. We're committed to bringing financial
-            services closer to communities across Ethiopia with convenient
-            locations and extended hours.
+            Find a Soser Saving & Credit Cooperative Union LTD office near you.
           </p>
         </motion.div>
 
         {/* Statistics */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12"
-        >
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300"
-            >
-              <stat.icon className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <h3 className="text-2xl font-bold text-gray-900">{stat.value}</h3>
-              <p className="text-gray-600">{stat.label}</p>
-            </div>
-          ))}
-        </motion.div>
 
         {/* Interactive Map */}
         <motion.div
@@ -194,7 +165,7 @@ const Office = () => {
               .filter((office) => office.featured)
               .slice(0, 1)
               .map((office, index) => (
-                <React.Fragment key={office.id}>
+                <div key={office.id} className="contents">
                   {/* Office Info Card */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -256,22 +227,6 @@ const Office = () => {
                       </div>
                     </div>
 
-                    <div className="mb-6">
-                      <h4 className="font-semibold text-gray-900 mb-3">
-                        Services Available:
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {office.services.map((service, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
-                          >
-                            {service}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
                     <div className="mt-auto pt-4 border-t border-gray-200">
                       <div className="text-sm text-gray-600">
                         <p>
@@ -301,7 +256,7 @@ const Office = () => {
                       </div>
                     </div>
                   </motion.div>
-                </React.Fragment>
+                </div>
               ))}
           </div>
         </div>
@@ -360,22 +315,6 @@ const Office = () => {
                     </div>
                   </div>
 
-                  <div className="mb-4">
-                    <h4 className="text-xs font-semibold text-gray-900 mb-2">
-                      SERVICES:
-                    </h4>
-                    <div className="flex flex-wrap gap-1">
-                      {branch.services.slice(0, 3).map((service, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
-                        >
-                          {service}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
                   <div className="text-xs text-gray-500">
                     <p>
                       <span className="font-medium">Manager:</span>{" "}
@@ -395,4 +334,4 @@ const Office = () => {
   );
 };
 
-export default Office;
+export default Offices;

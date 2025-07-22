@@ -20,10 +20,8 @@ const Loans = () => {
       id: 1,
       name: "Short Term Loan",
       icon: ClockIcon,
-      description: "Loan extending to one year with 13% interest per annum.",
       features: [
         "Up to 1 year duration",
-        "13% interest rate",
         "Quick approval",
         "Flexible repayment options",
       ],
@@ -32,11 +30,8 @@ const Loans = () => {
       id: 2,
       name: "Middle Term Loan",
       icon: ClockIcon,
-      description:
-        "Loan extending from one to five years with 13% interest per annum.",
       features: [
         "1-5 years duration",
-        "13% interest rate",
         "Medium-term financing",
         "Business growth support",
       ],
@@ -45,11 +40,8 @@ const Loans = () => {
       id: 3,
       name: "Long Term Loan",
       icon: ClockIcon,
-      description:
-        "Loan extending from five to ten years with 13% interest per annum.",
       features: [
         "5-10 years duration",
-        "13% interest rate",
         "Long-term investment",
         "Large project financing",
       ],
@@ -144,19 +136,24 @@ const Loans = () => {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
+        {/* Header with Background Image */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-16 relative overflow-hidden rounded-xl h-96"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Loan Services
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Flexible loan solutions at 13% interest rate designed to meet your
-            financial needs.
-          </p>
+          <div
+            className="absolute inset-0 bg-[url('https://hips.hearstapps.com/hmg-prod/images/how-to-get-a-personal-loan-1584033069.jpg')] bg-cover bg-center"
+            style={{
+              filter: "brightness(0.7)",
+              zIndex: 0,
+            }}
+          />
+          <div className="relative z-10 py-16 px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Loan Services
+            </h1>
+          </div>
         </motion.div>
 
         {/* Loan Types by Duration */}
@@ -166,9 +163,6 @@ const Loans = () => {
           transition={{ delay: 0.1 }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Loans by Duration
-          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {durationLoans.map((loan) => (
               <div
@@ -293,20 +287,7 @@ const Loans = () => {
           transition={{ delay: 0.7 }}
           className="bg-white rounded-xl shadow-lg p-8 mb-8"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-            Our Interest Rates
-          </h2>
           <div className="max-w-2xl mx-auto text-center">
-            <p className="text-xl text-gray-600 mb-4">
-              All our loans come with a competitive fixed interest rate of:
-            </p>
-            <div className="text-5xl font-bold text-blue-600 mb-6">
-              13% per annum
-            </div>
-            <p className="text-gray-600">
-              This rate applies to all loan durations and purposes, providing
-              you with predictable and transparent financing costs.
-            </p>
             <div className="mt-8">
               <Link to="/loan-calculator">
                 <button className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-green-700 transition-all duration-200">
@@ -316,8 +297,6 @@ const Loans = () => {
             </div>
           </div>
         </motion.div>
-
-        {/* Call to Action */}
       </div>
     </div>
   );
